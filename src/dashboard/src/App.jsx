@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { checkHealth } from './api'
+import { checkHealth, getMe, logout } from './api'
 import ConfigPanel from './pages/ConfigPanel'
 import Playground from './pages/Playground'
 import StatsPage from './pages/StatsPage'
 import ApiKeys from './pages/ApiKeys'
 import RequestLogs from './pages/RequestLogs'
 import LandingPage from './pages/LandingPage'
+import Settings from './pages/Settings'
+import AuthPage from './pages/AuthPage'
 
 // ─── Minimal Fine-line Icons (Origin Style) ──────────────────────────────────
 
@@ -103,6 +105,7 @@ function getTabFromPath() {
   if (typeof window === 'undefined') return 'landing'
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase()
   if (path === '' || path === 'landing') return 'landing'
+  if (path === 'login' || path === 'register' || path === 'auth') return 'login'
   if (VALID_TABS.includes(path)) return path
   return 'landing'
 }
@@ -502,14 +505,69 @@ export default function App() {
   const [hasUnreadWhatsNew, setHasUnreadWhatsNew] = useState(false)
   const [showTour, setShowTour] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [authChecked, setAuthChecked] = useState(false)
+  const [authPageTab, setAuthPageTab] = useState(() => (typeof window !== 'undefined' && window.location.pathname.includes('register') ? 'register' : 'login'))
+  const [pendingRoute, setPendingRoute] = useState(null)
+  const [showUserMenu, setShowUserMenu] = useState(false)
   const whatsNewRef = useRef(null)
+  const userMenuRef = useRef(null)
 
-  const navigateTo = (id) => {
+  useEffect(() => {
+    getMe()
+      .then(data => {
+        if (data?.user) setCurrentUser(data.user)
+      })
+      .catch(() => {})
+      .finally(() => {
+        setAuthChecked(true)
+      })
+  }, [])
+
+  useEffect(() => {
+    if (authChecked && !currentUser && active !== 'landing' && active !== 'login') {
+      setPendingRoute(active)
+      navigateTo('login')
+    }
+  }, [authChecked, currentUser, active])
+
+  useEffect(() => {
+    if (authChecked && currentUser && active === 'login') {
+      const dest = pendingRoute || 'playground'
+      setPendingRoute(null)
+      navigateTo(dest)
+    }
+  }, [authChecked, currentUser, active, pendingRoute])
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  async function handleLogout() {
+    try {
+      await logout()
+    } catch {}
+    setCurrentUser(null)
+    setShowUserMenu(false)
+    navigateTo('landing')
+  }
+
+  const navigateTo = (id, options = {}) => {
     setActive(id)
-    setSubTab(id === 'dashboard' ? 'metrics' : 'chat')
+    if (id === 'dashboard') setSubTab('metrics')
+    else if (id === 'playground') setSubTab('chat')
     const targetPath = id === 'landing' ? '/' : `/${id}`
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ tab: id }, '', targetPath)
+    }
+    if (options.authTab) {
+      setAuthPageTab(options.authTab)
     }
   }
 
@@ -531,6 +589,8 @@ export default function App() {
     const currentPath = window.location.pathname
     if (currentPath === '/' || currentPath === '' || currentPath === '/landing') {
       window.history.replaceState({ tab: 'landing' }, '', '/')
+    } else if (currentPath === '/login' || currentPath === '/register' || currentPath === '/auth') {
+      window.history.replaceState({ tab: 'login' }, '', currentPath)
     } else if (VALID_TABS.includes(currentPath.replace(/^\/+|\/+$/g, '').toLowerCase())) {
       window.history.replaceState({ tab: initialTab }, '', `/${initialTab}`)
     } else {
@@ -540,6 +600,13 @@ export default function App() {
     const handlePopState = () => {
       const tab = getTabFromPath()
       setActive(tab)
+      if (tab === 'login') {
+        if (window.location.pathname.includes('register')) {
+          setAuthPageTab('register')
+        } else {
+          setAuthPageTab('login')
+        }
+      }
       setSubTab(tab === 'dashboard' ? 'metrics' : 'chat')
     }
     window.addEventListener('popstate', handlePopState)
@@ -578,7 +645,31 @@ export default function App() {
   }, [showWhatsNew])
 
   if (active === 'landing') {
-    return <LandingPage onNavigate={navigateTo} />
+    return (
+      <LandingPage
+        user={currentUser}
+        onNavigate={navigateTo}
+        onRequireAuth={(target = 'playground', authTab = 'login') => {
+          setPendingRoute(target)
+          navigateTo('login', { authTab })
+        }}
+      />
+    )
+  }
+
+  if (active === 'login') {
+    return (
+      <AuthPage
+        initialTab={authPageTab}
+        onBack={() => navigateTo('landing')}
+        onAuthSuccess={(user) => {
+          setCurrentUser(user)
+          const dest = pendingRoute || 'playground'
+          setPendingRoute(null)
+          navigateTo(dest)
+        }}
+      />
+    )
   }
 
   const activeNavItem = NAV.find(n => n.id === active)
@@ -892,9 +983,63 @@ export default function App() {
               />
             </div>
 
-            {/* User Initials Avatar */}
-            <div className="w-8 h-8 rounded-full bg-zinc-200 border border-zinc-300 flex items-center justify-center text-xs font-bold text-zinc-800 select-none">
-              SR
+            {/* User Profile / Auth Button */}
+            <div className="relative" ref={userMenuRef}>
+              {currentUser ? (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowUserMenu(prev => !prev)}
+                    className="w-8 h-8 rounded-full bg-zinc-900 text-white border border-zinc-700 flex items-center justify-center text-xs font-bold select-none cursor-pointer hover:opacity-90 shadow-xs"
+                    title={currentUser.email}
+                  >
+                    {(currentUser.full_name || currentUser.email).slice(0, 2).toUpperCase()}
+                  </button>
+
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-56 bg-white border border-zinc-200 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="px-3 py-2 border-b border-zinc-100">
+                        <p className="text-xs font-semibold text-zinc-900 truncate">
+                          {currentUser.full_name || 'Developer'}
+                        </p>
+                        <p className="text-[11px] text-zinc-500 truncate">{currentUser.email}</p>
+                      </div>
+
+                      <div className="py-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigateTo('settings')
+                            setShowUserMenu(false)
+                          }}
+                          className="w-full text-left px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                        >
+                          <SettingsIcon />
+                          <span>Cài đặt &amp; Cá nhân hóa</span>
+                        </button>
+                      </div>
+
+                      <div className="pt-1 border-t border-zinc-100">
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="w-full text-left px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                        >
+                          <span>Đăng xuất</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => navigateTo('login')}
+                  className="px-3 py-1.5 text-xs font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 hover:text-zinc-900 rounded-full transition-colors cursor-pointer border border-zinc-200/80 shadow-2xs"
+                >
+                  Đăng nhập
+                </button>
+              )}
             </div>
           </div>
         </header>
@@ -919,6 +1064,12 @@ export default function App() {
             <ConfigPanel />
           ) : active === 'keys' ? (
             <ApiKeys />
+          ) : active === 'settings' ? (
+            <Settings
+              user={currentUser}
+              onAuthRequired={() => navigateTo('login')}
+              onUserUpdated={(u) => setCurrentUser(u)}
+            />
           ) : (
             <Placeholder page={activeNavItem?.label} />
           )}

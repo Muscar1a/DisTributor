@@ -3,14 +3,14 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from src.gateway.app.db.models import APIKey, ConfigSetting, Feedback, RequestLog, SessionFeedback
+from src.gateway.app.db.models import APIKey, ConfigSetting, Feedback, RequestLog, SessionFeedback, User
 from src.gateway.app.db.models import Session as SessionModel
 
 
 def get_api_key_by_hash(db: Session, key_hash: str):
-    return db.query(APIKey).filter(APIKey.key_hash == key_hash, APIKey.active).first()
+    return db.query(APIKey).options(joinedload(APIKey.user)).filter(APIKey.key_hash == key_hash, APIKey.active).first()
 
 
 def list_api_keys(db: Session):
@@ -26,8 +26,8 @@ def count_requests_by_api_key(db: Session) -> dict[int, int]:
     return {api_key_id: count for api_key_id, count in rows if api_key_id is not None}
 
 
-def create_api_key(db: Session, *, name: str, key_hash: str, key_masked: str, rate_limit: int):
-    api_key = APIKey(name=name, key_hash=key_hash, key_masked=key_masked, rate_limit=rate_limit)
+def create_api_key(db: Session, *, name: str, key_hash: str, key_masked: str, rate_limit: int, user_id: int | None = None):
+    api_key = APIKey(name=name, key_hash=key_hash, key_masked=key_masked, rate_limit=rate_limit, user_id=user_id)
     db.add(api_key)
     db.commit()
     db.refresh(api_key)
@@ -349,3 +349,61 @@ def get_session_requests(db: Session, session_id: str | uuid.UUID) -> list[Reque
         .order_by(RequestLog.ts.asc())
         .all()
     )
+
+
+def create_user(
+    db: Session,
+    *,
+    email: str,
+    password_hash: str,
+    full_name: str | None = None,
+    preferences: dict | None = None,
+) -> User:
+    default_prefs = {
+        "default_policy": "balanced",
+        "default_classifier_version": "v1.5",
+    }
+    if preferences:
+        default_prefs.update(preferences)
+
+    user = User(
+        email=email.strip().lower(),
+        password_hash=password_hash,
+        full_name=full_name.strip() if full_name else None,
+        preferences=default_prefs,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def get_user_by_email(db: Session, email: str) -> User | None:
+    return db.query(User).filter(func.lower(User.email) == email.strip().lower()).first()
+
+
+def get_user_by_id(db: Session, user_id: int) -> User | None:
+    return db.query(User).filter(User.id == user_id).first()
+
+
+def update_user_preferences(db: Session, user: User, preferences: dict) -> User:
+    current_prefs = dict(user.preferences or {})
+    current_prefs.update(preferences)
+    user.preferences = current_prefs
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def list_user_api_keys(db: Session, user_id: int) -> list[APIKey]:
+    return db.query(APIKey).filter(APIKey.user_id == user_id).order_by(APIKey.id).all()
+
+
+def revoke_user_api_key(db: Session, user_id: int, key_id: int) -> APIKey | None:
+    api_key = db.query(APIKey).filter(APIKey.id == key_id, APIKey.user_id == user_id).first()
+    if api_key is None:
+        return None
+    api_key.active = False
+    db.commit()
+    db.refresh(api_key)
+    return api_key

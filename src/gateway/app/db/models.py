@@ -20,10 +20,30 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
+    full_name = Column(String, nullable=True)
+    preferences = Column(JSON, nullable=False, default=dict)
+    active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    api_keys = relationship("APIKey", back_populates="user")
+    sessions = relationship("Session", back_populates="user")
+
+    __table_args__ = (
+        Index("uq_users_email_ci", func.lower(email), unique=True),
+    )
+
+
 class APIKey(Base):
     __tablename__ = "api_keys"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     name = Column(String, nullable=False)
     key_hash = Column(String, unique=True, index=True, nullable=False)
     key_masked = Column(String, nullable=False)
@@ -31,6 +51,7 @@ class APIKey(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     active = Column(Boolean, nullable=False, default=True)
 
+    user = relationship("User", back_populates="api_keys")
     requests = relationship("RequestLog", back_populates="api_key")
 
     __table_args__ = (
@@ -46,11 +67,13 @@ class Session(Base):
     __tablename__ = "sessions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     api_key_id = Column(Integer, ForeignKey("api_keys.id"), nullable=True)
     started_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     last_activity_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     routing_state = Column(JSON, nullable=True)
 
+    user = relationship("User", back_populates="sessions")
     requests = relationship("RequestLog", back_populates="session")
     feedback = relationship("SessionFeedback", uselist=False, back_populates="session")
 

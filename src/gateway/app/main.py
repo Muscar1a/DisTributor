@@ -16,6 +16,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.gateway.app.adapters.mock_adapter import MockAdapter
 from src.gateway.app.api.admin import router as admin_router
+from src.gateway.app.api.auth import router as auth_router
 from src.gateway.app.api.chat_completions import router as completions_router
 from src.gateway.app.api.compatibility import router as compatibility_router
 from src.gateway.app.api.errors import openai_error_response
@@ -253,6 +254,7 @@ async def playground():
 
 
 app.include_router(health_router)
+app.include_router(auth_router)
 app.include_router(completions_router, prefix="/v1")
 app.include_router(compatibility_router, prefix="/v1")
 app.include_router(admin_router, prefix="/admin")
@@ -300,6 +302,7 @@ async def _http_handler(request: Request, exc: StarletteHTTPException) -> JSONRe
         code=err_code,
         param=param,
         details=details,
+        headers=exc.headers,
     )
 
 

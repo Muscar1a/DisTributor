@@ -84,7 +84,7 @@ const SAMPLES = [
   },
 ]
 
-export default function LandingPage({ onNavigate }) {
+export default function LandingPage({ onNavigate, user, onRequireAuth }) {
   const [selectedSample, setSelectedSample] = useState(SAMPLES[0])
   const [activeCodeTab, setActiveCodeTab] = useState('python')
   const [isRunningTest, setIsRunningTest] = useState(false)
@@ -107,6 +107,14 @@ export default function LandingPage({ onNavigate }) {
   }
 
   const handleLaunchApp = (route = 'playground') => {
+    if (!user) {
+      if (onRequireAuth) {
+        onRequireAuth(route)
+      } else if (onNavigate) {
+        onNavigate(route)
+      }
+      return
+    }
     if (onNavigate) {
       onNavigate(route)
     } else {
@@ -211,13 +219,36 @@ export default function LandingPage({ onNavigate }) {
             >
               Xem Dashboard
             </button>
-            <button
-              onClick={() => handleLaunchApp('playground')}
-              className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all shadow-xs active:scale-95"
-            >
-              <span>Vào ứng dụng</span>
-              <ArrowRightIcon />
-            </button>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden md:inline-flex text-xs font-medium text-zinc-600 bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded-full">
+                  {user.full_name || user.email}
+                </span>
+                <button
+                  onClick={() => handleLaunchApp('playground')}
+                  className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all shadow-xs active:scale-95"
+                >
+                  <span>Vào ứng dụng</span>
+                  <ArrowRightIcon />
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => onRequireAuth ? onRequireAuth('playground') : handleLaunchApp('playground')}
+                  className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 px-3 py-1.5 rounded-full hover:bg-zinc-100 transition-colors"
+                >
+                  Đăng nhập
+                </button>
+                <button
+                  onClick={() => handleLaunchApp('playground')}
+                  className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all shadow-xs active:scale-95"
+                >
+                  <span>Vào ứng dụng</span>
+                  <ArrowRightIcon />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>

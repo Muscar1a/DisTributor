@@ -265,3 +265,81 @@ export async function revokeApiKey(adminKey, keyId) {
   }
   return readJson(res)
 }
+
+// ─── User Authentication & Personalization API (HttpOnly Cookie) ────────────
+
+export async function register(email, password, fullName) {
+  const res = await fetch(endpoint('/v1/auth/register'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ email, password, full_name: fullName || null }),
+  })
+  return readJson(res)
+}
+
+export async function login(email, password) {
+  const res = await fetch(endpoint('/v1/auth/login'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ email, password }),
+  })
+  return readJson(res)
+}
+
+export async function logout() {
+  const res = await fetch(endpoint('/v1/auth/logout'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+  return readJson(res)
+}
+
+export async function getMe() {
+  const res = await fetch(endpoint('/v1/auth/me'), {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+  if (res.status === 401) return null
+  return readJson(res)
+}
+
+export async function updatePreferences(preferences) {
+  const res = await fetch(endpoint('/v1/auth/preferences'), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(preferences),
+  })
+  return readJson(res)
+}
+
+export async function fetchUserKeys() {
+  const res = await fetch(endpoint('/v1/user/keys'), {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+  return readJson(res)
+}
+
+export async function createUserKey(name, rateLimitPerMin) {
+  const res = await fetch(endpoint('/v1/user/keys'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ name, rate_limit_per_min: rateLimitPerMin }),
+  })
+  return readJson(res)
+}
+
+export async function revokeUserKey(keyId) {
+  const res = await fetch(endpoint(`/v1/user/keys/${keyId}`), {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
+  return readJson(res)
+}
+

@@ -344,6 +344,9 @@ async def chat_completions(
     orchestrator = _req.app.state.orchestrator
     sr = request.smartroute
     requested_classifier = sr.classifier_version if sr else None
+    user_prefs = getattr(_req.state, "user_preferences", None) or {}
+    if not requested_classifier and user_prefs.get("default_classifier_version"):
+        requested_classifier = user_prefs.get("default_classifier_version")
 
     if requested_classifier == "v2":
         cfg = getattr(_req.app.state, "config", None)
@@ -389,6 +392,10 @@ async def chat_completions(
     )
 
     policy = sr.policy if sr else None
+    if not policy and user_prefs.get("default_policy"):
+        pref_policy = str(user_prefs["default_policy"]).replace("-", "_")
+        if pref_policy in {"cost_first", "balanced", "quality_first"}:
+            policy = pref_policy
     force_model = sr.force_model if sr else None
     user_force_tier = Tier(sr.force_tier) if sr and sr.force_tier else None
     session_id = sr.session_id if sr else None

@@ -138,6 +138,10 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 return _error_401(request_id)
             return None
 
+        # Auth & user routes handle their own cookie/session auth
+        if path.startswith("/v1/auth") or path.startswith("/v1/user"):
+            return None
+
         if path.startswith(_V1_PREFIX):
             dev_key = os.getenv("GATEWAY_DEV_KEY", "")
             auth_required = os.getenv("API_AUTH_REQUIRED", "").lower() in {"1", "true", "yes"} or os.getenv(
@@ -169,6 +173,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 return _error_401(request_id)
             request.state.api_key_id = api_key.id
             request.state.rate_limit = api_key.rate_limit
+            request.state.user_id = getattr(api_key, "user_id", None)
+            if request.state.user_id and hasattr(api_key, "user") and api_key.user:
+                request.state.user_preferences = dict(api_key.user.preferences or {})
             return None
 
         # Docs, OpenAPI spec, etc.: passthrough
