@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AI20K-Build-Phase-Cohort-3/P-156/blob/TrungHieu/src/evals/datasets/schema.json",
+  "title": "SmartRoute mixed_200 record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "prompt", "language", "category", "difficulty", "expected_tier",
+    "source_dataset", "source_revision", "source_record_id", "source_url", "license",
+    "pii_review_status", "annotation_status", "annotator", "annotation_notes"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^wc-(vi|en)-[0-9]{3}$"},
+    "prompt": {"type": "string", "minLength": 1},
+    "language": {"enum": ["vi", "en"]},
+    "category": {"enum": ["chitchat", "factual_qa", "explanation", "translation", "summarization", "information_extraction", "writing", "coding", "math_reasoning", "analysis_planning", "other"]},
+    "difficulty": {"enum": ["easy", "medium", "hard"]},
+    "expected_tier": {"enum": ["T1", "T2", "T3"]},
+    "source_dataset": {"const": "allenai/WildChat-1M"},
+    "source_revision": {"const": "7d6490e462285cf85d91eabea0f9a954fbddcd1f"},
+    "source_record_id": {"type": "string", "pattern": "^[a-f0-9]{32}:[0-9]+$"},
+    "source_url": {"const": "https://huggingface.co/datasets/allenai/WildChat-1M"},
+    "license": {"const": "ODC-BY-1.0"},
+    "pii_review_status": {"enum": ["pending_human_review", "human_verified"]},
+    "annotation_status": {"enum": ["ai_assisted_pending_human_review", "human_verified", "human_revised"]},
+    "annotator": {"type": "string", "minLength": 1},
+    "annotation_notes": {"type": "string"}
+  }
+}

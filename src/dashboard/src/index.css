@@ -1,0 +1,92 @@
+/* Hallmark · macrostructure: workbench-app · tone: soft-utilitarian · anchor hue: orange · paper: warm
+ * theme: Warm Cream — stone-50 paper · orange-600 accent · inter/sans
+ * prev: Linen (gray/blue) → this: Warm Cream (stone/orange) — differs: warm neutral + terracotta accent
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: #F5F6F8;
+    color: #18181B;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbar — minimal clean theme */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #E4E4E7; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #D4D4D8; }
+
+  /* Modal & Dropdown animations */
+  .animate-in {
+    animation: dropdown-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: top right;
+  }
+  .animate-out {
+    animation: dropdown-out 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: top right;
+  }
+  @keyframes dropdown-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-6px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes dropdown-out {
+    from { opacity: 1; transform: scale(1) translateY(0); }
+    to   { opacity: 0; transform: scale(0.95) translateY(-6px); }
+  }
+
+  /* Drawer & slide animations */
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+  }
+  @keyframes slide-out-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+  }
+  .animate-slide-in-left {
+    animation: slide-in-left 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-slide-out-left {
+    animation: slide-out-left 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .animate-fadeIn {
+    animation: fade-in 0.15s ease-out forwards;
+  }
+
+  /* Smooth touch scroll */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide scrollbar utility */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Select arrow for neutral bg */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 28px;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+}
+

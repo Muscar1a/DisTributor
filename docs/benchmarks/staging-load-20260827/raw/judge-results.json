@@ -1,0 +1,857 @@
+{
+  "generated_at": "2026-08-26T19:33:29.827484+00:00",
+  "target": "https://p-156-staging.onrender.com",
+  "deployment_commit": "5d9a84eccf15a58a5139fc2ce03478aca4e2e370",
+  "contract_and_routing": {
+    "probes": [
+      {
+        "name": "health",
+        "method": "GET",
+        "path": "/healthz",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 437.3,
+        "passed": true
+      },
+      {
+        "name": "readiness",
+        "method": "GET",
+        "path": "/readyz",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 331.82,
+        "passed": true
+      },
+      {
+        "name": "missing auth",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 401,
+        "actual_status": 200,
+        "expected_error_code": "invalid_api_key",
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1116.0,
+        "passed": false
+      },
+      {
+        "name": "invalid auth",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 401,
+        "actual_status": 401,
+        "expected_error_code": "invalid_api_key",
+        "actual_error_code": "invalid_api_key",
+        "retry_after": null,
+        "latency_ms": 737.96,
+        "passed": true
+      },
+      {
+        "name": "unsupported tools",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 400,
+        "actual_status": 400,
+        "expected_error_code": "unsupported_parameter",
+        "actual_error_code": "unsupported_parameter",
+        "retry_after": null,
+        "latency_ms": 368.75,
+        "passed": true
+      },
+      {
+        "name": "too many messages",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 400,
+        "actual_status": 422,
+        "expected_error_code": "too_many_messages",
+        "actual_error_code": "validation_error",
+        "retry_after": null,
+        "latency_ms": 380.12,
+        "passed": false
+      },
+      {
+        "name": "missing messages",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 422,
+        "actual_status": 422,
+        "expected_error_code": "validation_error",
+        "actual_error_code": "validation_error",
+        "retry_after": null,
+        "latency_ms": 366.01,
+        "passed": true
+      },
+      {
+        "name": "empty content",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 422,
+        "actual_status": 422,
+        "expected_error_code": "validation_error",
+        "actual_error_code": "validation_error",
+        "retry_after": null,
+        "latency_ms": 366.77,
+        "passed": true
+      },
+      {
+        "name": "context too long",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 400,
+        "actual_status": 400,
+        "expected_error_code": "context_too_long",
+        "actual_error_code": "context_too_long",
+        "retry_after": null,
+        "latency_ms": 409.17,
+        "passed": true
+      },
+      {
+        "name": "body too large",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 413,
+        "actual_status": 413,
+        "expected_error_code": "request_too_large",
+        "actual_error_code": "request_too_large",
+        "retry_after": null,
+        "latency_ms": 239.12,
+        "passed": true
+      },
+      {
+        "name": "unknown forced model",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 400,
+        "actual_status": 400,
+        "expected_error_code": "unknown_model",
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 663.88,
+        "passed": false
+      },
+      {
+        "name": "models list",
+        "method": "GET",
+        "path": "/v1/models",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 381.64,
+        "passed": true
+      },
+      {
+        "name": "force tier T1",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1158.17,
+        "passed": true,
+        "observed_tier": "T1",
+        "observed_model": "mock-cheap",
+        "observed_provider": "mock",
+        "router_latency_ms": 0
+      },
+      {
+        "name": "force tier T2",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1155.99,
+        "passed": true,
+        "observed_tier": "T2",
+        "observed_model": "mock-mid",
+        "observed_provider": "mock",
+        "router_latency_ms": 0
+      },
+      {
+        "name": "force tier T3",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1367.0,
+        "passed": true,
+        "observed_tier": "T3",
+        "observed_model": "mock-premium",
+        "observed_provider": "mock",
+        "router_latency_ms": 0
+      },
+      {
+        "name": "completion for usage lookup",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1153.83,
+        "passed": true
+      },
+      {
+        "name": "usage lookup",
+        "method": "GET",
+        "path": "/v1/usage/89904e4f-55d2-4712-95f3-50ccec57de14",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 583.61,
+        "passed": true
+      },
+      {
+        "name": "streaming SSE",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1874.26,
+        "passed": true,
+        "content_type": "text/event-stream; charset=utf-8",
+        "has_done_marker": true
+      }
+    ],
+    "models_advertised": [
+      "gemini-flash-lite",
+      "gemini-flash",
+      "gemini-pro",
+      "llama-3.3-70b",
+      "groq-compound",
+      "gpt-5-nano",
+      "gpt-4.1-nano",
+      "gpt-4o-mini",
+      "gpt-5.4-nano",
+      "gpt-5-mini",
+      "gpt-4.1-mini",
+      "gpt-5.4-mini",
+      "o3-mini",
+      "o4-mini",
+      "gpt-5.1",
+      "gpt-5",
+      "gpt-5.2",
+      "gpt-4.1",
+      "gpt-4o",
+      "gpt-5.4"
+    ],
+    "routing_rows": [
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1171.87,
+        "prompt": "Hi"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1155.49,
+        "prompt": "Translate hello to Vietnamese"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 20,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1161.78,
+        "prompt": "What is 2+2?"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1156.56,
+        "prompt": "Define API"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1159.95,
+        "prompt": "Summarize: cats are mammals"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1168.08,
+        "prompt": "Say thank you"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1152.66,
+        "prompt": "What is HTTP?"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1161.8,
+        "prompt": "Name Vietnam's capital"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 15,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1155.79,
+        "prompt": "Fix this typo: teh"
+      },
+      {
+        "expected": "T1",
+        "predicted": "T1",
+        "score": 22,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1153.58,
+        "prompt": "Return JSON with ok=true"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 15,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1155.59,
+        "prompt": "Compare REST and GraphQL"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1152.57,
+        "prompt": "Explain dependency injection with an example"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1156.39,
+        "prompt": "Write a Python binary search"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1158.14,
+        "prompt": "Summarize the tradeoffs of SQL indexes"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1158.03,
+        "prompt": "Create five unit-test cases for a parser"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1157.25,
+        "prompt": "Explain OAuth authorization code flow"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 22,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1169.79,
+        "prompt": "Refactor a function for readability"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 15,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1158.53,
+        "prompt": "Compare queues and pub-sub"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1155.17,
+        "prompt": "Write a paginated API endpoint"
+      },
+      {
+        "expected": "T2",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1150.87,
+        "prompt": "Explain database normalization"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1157.27,
+        "prompt": "Design a distributed rate limiter with failure recovery"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 22,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1161.67,
+        "prompt": "Debug a production-only deadlock in a worker pool"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1155.19,
+        "prompt": "Threat-model a multi-tenant authentication system"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 20,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1154.71,
+        "prompt": "Prove the time complexity of this graph algorithm"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1156.84,
+        "prompt": "Design an exactly-once payment workflow"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1152.66,
+        "prompt": "Optimize a database handling ten million writes per second"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 15,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1163.31,
+        "prompt": "Analyze a race condition that randomly fails in CI"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1158.27,
+        "prompt": "Design consensus under network partitions"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 20,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1149.68,
+        "prompt": "Solve a dynamic programming problem with proof"
+      },
+      {
+        "expected": "T3",
+        "predicted": "T1",
+        "score": 0,
+        "router_latency_ms": 0,
+        "total_latency_ms": 1153.8,
+        "prompt": "Review microservice architecture for cascading failures"
+      }
+    ],
+    "routing_confusion": {
+      "T1->T1": 10,
+      "T2->T1": 10,
+      "T3->T1": 10
+    },
+    "routing_accuracy": 0.3333333333333333,
+    "hard_routed_to_t1": 10
+  },
+  "rate_limit": {
+    "configured_rpm": 5,
+    "observations": [
+      {
+        "name": "key A request 1",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1294.92,
+        "passed": true
+      },
+      {
+        "name": "key A request 2",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1156.04,
+        "passed": true
+      },
+      {
+        "name": "key A request 3",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1158.35,
+        "passed": true
+      },
+      {
+        "name": "key A request 4",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1164.98,
+        "passed": true
+      },
+      {
+        "name": "key A request 5",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1156.21,
+        "passed": true
+      },
+      {
+        "name": "key A request 6",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 429,
+        "actual_status": 429,
+        "expected_error_code": "rate_limit_exceeded",
+        "actual_error_code": "rate_limit_exceeded",
+        "retry_after": "60",
+        "latency_ms": 365.91,
+        "passed": true
+      },
+      {
+        "name": "key B isolation",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 200,
+        "actual_status": 200,
+        "expected_error_code": null,
+        "actual_error_code": null,
+        "retry_after": null,
+        "latency_ms": 1161.47,
+        "passed": true
+      },
+      {
+        "name": "revoked key",
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "expected_status": 401,
+        "actual_status": 401,
+        "expected_error_code": "invalid_api_key",
+        "actual_error_code": "invalid_api_key",
+        "retry_after": null,
+        "latency_ms": 374.92,
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "daily_quota": {
+    "observations": [
+      {
+        "request": 1,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 2208.89
+      },
+      {
+        "request": 2,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1704.07
+      },
+      {
+        "request": 3,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1701.92
+      },
+      {
+        "request": 4,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1608.73
+      },
+      {
+        "request": 5,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1625.75
+      },
+      {
+        "request": 6,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1570.24
+      },
+      {
+        "request": 7,
+        "status": 200,
+        "error_code": null,
+        "retry_after": null,
+        "latency_ms": 1597.12
+      },
+      {
+        "request": 8,
+        "status": 429,
+        "error_code": "daily_token_budget_exceeded",
+        "retry_after": "15875",
+        "latency_ms": 584.16
+      }
+    ],
+    "passed": true,
+    "first_quota_rejection": {
+      "request": 8,
+      "status": 429,
+      "error_code": "daily_token_budget_exceeded",
+      "retry_after": "15875",
+      "latency_ms": 584.16
+    }
+  },
+  "capacity": [
+    {
+      "name": "baseline_users_1",
+      "users": 1,
+      "duration": "5m",
+      "exit_code": 0,
+      "stats": {
+        "http": {
+          "requests": 149,
+          "failures": 0,
+          "rps": 0.5013641147033709,
+          "average_ms": 1179.4535624161188,
+          "min_ms": 1150.876400000925,
+          "max_ms": 1559.1292999997677,
+          "p50_ms": 1200.0,
+          "p90_ms": 1200.0,
+          "p95_ms": 1400.0,
+          "p99_ms": 1500.0
+        },
+        "router": {
+          "requests": 149,
+          "failures": 0,
+          "rps": 0.5013641147033709,
+          "average_ms": 9.912751677852349,
+          "min_ms": 0.0,
+          "max_ms": 301.0,
+          "p50_ms": 0.0,
+          "p90_ms": 0.0,
+          "p95_ms": 0.0,
+          "p99_ms": 300.0
+        },
+        "aggregate": {
+          "requests": 298,
+          "failures": 0,
+          "rps": 1.0027282294067419,
+          "average_ms": 594.6831570469856,
+          "min_ms": 0.0,
+          "max_ms": 1559.1292999997677,
+          "p50_ms": 1200.0,
+          "p90_ms": 1200.0,
+          "p95_ms": 1200.0,
+          "p99_ms": 1500.0
+        }
+      },
+      "route_summary": {
+        "http_statuses": {
+          "200": 150
+        },
+        "error_codes": {},
+        "routes": {
+          "easy:T1:mock-cheap:mock": 49,
+          "hard:T3:mock-premium:mock": 45,
+          "medium:T2:mock-mid:mock": 56
+        },
+        "contract_failures": [],
+        "locust_total_requests_including_router_metrics": 300,
+        "locust_total_failures": 0
+      }
+    },
+    {
+      "name": "required_users_3",
+      "users": 3,
+      "duration": "10m",
+      "exit_code": 0,
+      "stats": {
+        "http": {
+          "requests": 664,
+          "failures": 0,
+          "rps": 1.1076000271307374,
+          "average_ms": 2700.8240025603086,
+          "min_ms": 1844.0080999989732,
+          "max_ms": 3332.6196000016353,
+          "p50_ms": 2700.0,
+          "p90_ms": 3000.0,
+          "p95_ms": 3000.0,
+          "p99_ms": 3100.0
+        },
+        "router": {
+          "requests": 664,
+          "failures": 0,
+          "rps": 1.1076000271307374,
+          "average_ms": 4.424698795180723,
+          "min_ms": 0.0,
+          "max_ms": 299.0,
+          "p50_ms": 0.0,
+          "p90_ms": 0.0,
+          "p95_ms": 0.0,
+          "p99_ms": 290.0
+        },
+        "aggregate": {
+          "requests": 1328,
+          "failures": 0,
+          "rps": 2.2152000542614747,
+          "average_ms": 1352.6243506777441,
+          "min_ms": 0.0,
+          "max_ms": 3332.6196000016353,
+          "p50_ms": 1800.0,
+          "p90_ms": 2700.0,
+          "p95_ms": 3000.0,
+          "p99_ms": 3000.0
+        }
+      },
+      "route_summary": {
+        "http_statuses": {
+          "200": 664
+        },
+        "error_codes": {},
+        "routes": {
+          "easy:T1:mock-cheap:mock": 247,
+          "medium:T2:mock-mid:mock": 234,
+          "hard:T3:mock-premium:mock": 183
+        },
+        "contract_failures": [],
+        "locust_total_requests_including_router_metrics": 1328,
+        "locust_total_failures": 0
+      }
+    },
+    {
+      "name": "prd_max_users_5",
+      "users": 5,
+      "duration": "15m",
+      "exit_code": 0,
+      "stats": {
+        "http": {
+          "requests": 954,
+          "failures": 0,
+          "rps": 1.0627085352817174,
+          "average_ms": 4688.918055870021,
+          "min_ms": 1864.3611000006786,
+          "max_ms": 5958.248099999764,
+          "p50_ms": 4700.0,
+          "p90_ms": 5000.0,
+          "p95_ms": 5100.0,
+          "p99_ms": 5300.0
+        },
+        "router": {
+          "requests": 954,
+          "failures": 0,
+          "rps": 1.0627085352817174,
+          "average_ms": 5.360587002096436,
+          "min_ms": 0.0,
+          "max_ms": 646.0,
+          "p50_ms": 0.0,
+          "p90_ms": 0.0,
+          "p95_ms": 0.0,
+          "p99_ms": 290.0
+        },
+        "aggregate": {
+          "requests": 1908,
+          "failures": 0,
+          "rps": 2.1254170705634348,
+          "average_ms": 2347.1393214360587,
+          "min_ms": 0.0,
+          "max_ms": 5958.248099999764,
+          "p50_ms": 1900.0,
+          "p90_ms": 4800.0,
+          "p95_ms": 5000.0,
+          "p99_ms": 5200.0
+        }
+      },
+      "route_summary": {
+        "http_statuses": {
+          "200": 954
+        },
+        "error_codes": {},
+        "routes": {
+          "easy:T1:mock-cheap:mock": 377,
+          "hard:T3:mock-premium:mock": 237,
+          "medium:T2:mock-mid:mock": 340
+        },
+        "contract_failures": [],
+        "locust_total_requests_including_router_metrics": 1908,
+        "locust_total_failures": 0
+      }
+    }
+  ],
+  "finished_at": "2026-08-26T20:05:45.422332+00:00"
+}

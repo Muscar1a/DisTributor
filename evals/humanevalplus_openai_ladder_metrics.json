@@ -1,0 +1,87 @@
+{
+  "benchmark": "HumanEval+",
+  "dataset_hash": "fe585eb4df8c88d844eeb463ea4d0302",
+  "n": 5,
+  "smart_valid": 5,
+  "strong_valid": 5,
+  "smart_pass_at_1": 1.0,
+  "strong_pass_at_1": 1.0,
+  "quality_retention": 1.0,
+  "results": [
+    {
+      "id": "HumanEval/0",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/1",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/2",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/3",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/4",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    }
+  ]
+}

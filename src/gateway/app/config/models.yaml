@@ -1,0 +1,29 @@
+# models.yaml — ánh xạ tier -> model (schema: docs/design/05_interfaces.md §D)
+#
+# Phạm vi MVP (PRD FR-03): 2 provider thật (Gemini, Groq) + MockAdapter.
+# Tên model lấy từ PRD §6.1 và là PLACEHOLDER — Member 2 chốt lại ở M1 kèm
+# snapshot bảng giá (Open Question trong 06_architecture.md §9).
+
+tiers:
+  T1:
+    primary: { model: gpt-5.4-nano, provider: openai }
+    fallbacks:
+      - { model: gemini-flash-lite, provider: google }
+      - { model: llama-3.3-70b, provider: groq }
+  T2:
+    primary: { model: gpt-5.4-mini, provider: openai }
+    fallbacks:
+      - { model: gemini-flash, provider: google }
+      - { model: groq-compound, provider: groq }
+  T3:
+    primary: { model: gpt-5.4,       provider: openai }
+    fallbacks:
+      - { model: gemini-pro, provider: google }
+
+# PRD §6.2: score < 30 -> T1, 30–59 -> T2, >= 60 -> T3.
+# Hai khoá dưới là CẬN TRÊN KHÔNG BAO GỒM (score < t1_max -> T1).
+thresholds:
+  t1_max: 30
+  t2_max: 60
+
+default_policy: balanced

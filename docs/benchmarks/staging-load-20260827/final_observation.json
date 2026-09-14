@@ -1,0 +1,13 @@
+{
+  "stage": "required_users_3",
+  "planned_duration_minutes": 15,
+  "stopped_early": true,
+  "http_requests": 686,
+  "http_failures": 36,
+  "http_error_rate": 0.0525,
+  "successful_router_measurements": 650,
+  "http_median_ms": 2700,
+  "http_average_ms": 2624,
+  "http_max_ms": 3353,
+  "source": "final Locust console summary after manual safety stop"
+}

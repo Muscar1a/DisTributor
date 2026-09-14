@@ -1,0 +1,15 @@
+# policies.yaml — schema: docs/design/05_interfaces.md §D
+#
+# tier_shift cộng thẳng vào score TRƯỚC khi ánh xạ tier (PRD §6.2):
+#   cost_first hạ 10 điểm  -> dễ rơi xuống tier rẻ hơn
+#   quality_first nâng 10  -> dễ lên tier mạnh hơn
+#
+# order_by quyết định thứ tự các model trong chain sau khi đã lọc capability:
+#   cost_asc          — rẻ trước
+#   quality_then_cost — quality_rank cao trước, hoà thì rẻ trước
+#   quality_desc      — quality_rank cao trước
+
+policies:
+  cost_first: { tier_shift: -10, order_by: cost_asc }
+  balanced: { tier_shift: 0, order_by: quality_then_cost }
+  quality_first: { tier_shift: 10, order_by: quality_desc }

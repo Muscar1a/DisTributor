@@ -1,0 +1,63 @@
+{
+  "routing": {
+    "n": 164,
+    "accuracy": 0.9390243902439024,
+    "macro_f1": 0.3228511530398323,
+    "per_tier": {
+      "T1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "T2": {
+        "precision": 1.0,
+        "recall": 0.9390243902439024,
+        "f1": 0.9685534591194969
+      },
+      "T3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "confusion": {
+      "T1": {
+        "T1": 0,
+        "T2": 0,
+        "T3": 0
+      },
+      "T2": {
+        "T1": 10,
+        "T2": 154,
+        "T3": 0
+      },
+      "T3": {
+        "T1": 0,
+        "T2": 0,
+        "T3": 0
+      }
+    },
+    "predicted_distribution": {
+      "T2": 154,
+      "T1": 10
+    },
+    "hard_to_t1_rate": 0.0,
+    "latency_p50_ms": 0.0,
+    "latency_p95_ms": 0.0
+  },
+  "category_slices": {
+    "coding": {
+      "n": 164,
+      "accuracy": 0.9390243902439024,
+      "hard_to_t1": 0
+    }
+  },
+  "language_slices": {
+    "en": {
+      "n": 164,
+      "accuracy": 0.9390243902439024,
+      "hard_to_t1": 0
+    }
+  },
+  "quality": null
+}

@@ -1,0 +1,24 @@
+openai_quotas:
+  - group: premium
+    limit_tokens: 250000
+    models:
+      - gpt-5.4
+      - gpt-5.2
+      - gpt-5.1
+      - gpt-5
+      - gpt-4.1
+      - gpt-4o
+      - o1
+      - o3
+  - group: standard
+    limit_tokens: 2500000
+    models:
+      - gpt-5.4-mini
+      - gpt-5.4-nano
+      - gpt-5-mini
+      - gpt-5-nano
+      - gpt-4.1-mini
+      - gpt-4.1-nano
+      - gpt-4o-mini
+      - o3-mini
+      - o4-mini

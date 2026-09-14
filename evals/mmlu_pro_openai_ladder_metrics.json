@@ -1,0 +1,79 @@
+{
+  "routing": {
+    "n": 20,
+    "accuracy": 0.0,
+    "macro_f1": 0.0,
+    "per_tier": {
+      "T1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "T2": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "T3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "confusion": {
+      "T1": {
+        "T1": 0,
+        "T2": 0,
+        "T3": 0
+      },
+      "T2": {
+        "T1": 0,
+        "T2": 0,
+        "T3": 0
+      },
+      "T3": {
+        "T1": 17,
+        "T2": 3,
+        "T3": 0
+      }
+    },
+    "predicted_distribution": {
+      "T1": 17,
+      "T2": 3
+    },
+    "hard_to_t1_rate": 0.85,
+    "latency_p50_ms": 0.5,
+    "latency_p95_ms": 1.0500000000000007
+  },
+  "category_slices": {
+    "business": {
+      "n": 20,
+      "accuracy": 0.0,
+      "hard_to_t1": 17
+    }
+  },
+  "language_slices": {
+    "en": {
+      "n": 20,
+      "accuracy": 0.0,
+      "hard_to_t1": 17
+    }
+  },
+  "quality": {
+    "n": 5,
+    "valid_n": 5,
+    "failed_n": 0,
+    "objective_n": 5,
+    "pairwise_n": 0,
+    "smart_accuracy": 0.2,
+    "strong_accuracy": 0.8,
+    "qr_objective": 0.25,
+    "qr_pairwise": null,
+    "quality_retention": 0.25,
+    "quality_retention_hard": 0.25,
+    "critical_fail_rate": 0.6,
+    "smart_cost_usd": 0.00031549999999999997,
+    "strong_cost_usd": 0.00238,
+    "cost_savings_pct": 0.8674369747899161
+  }
+}

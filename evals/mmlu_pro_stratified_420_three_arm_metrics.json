@@ -1,0 +1,93 @@
+{
+  "benchmark": "MMLU-Pro",
+  "n": 420,
+  "sample": {
+    "categories": 14,
+    "per_category": 30,
+    "selection": "sha256_rank_per_category",
+    "seed": "mmlu-pro-stratified-420-v1",
+    "sha256": "1EB48EF14C41BA1F90145B0AC3D86EAEEEBF9C43D21078807B6288CB250A8596"
+  },
+  "arms": {
+    "all_nano": {
+      "model_distribution": {"gpt-5.4-nano": 420},
+      "correct": 160,
+      "accuracy": 0.380952380952381,
+      "accuracy_wilson_95": [0.33578665849056016, 0.42827606373995913],
+      "prompt_tokens": 79056,
+      "completion_tokens": 1731,
+      "modeled_cost_usd": 0.01797495,
+      "cost_per_correct_usd": 0.0001123434375,
+      "correct_per_usd": 8901.276498682884
+    },
+    "classifier_v1_5": {
+      "model_distribution": {
+        "gpt-5.4-nano": 289,
+        "gpt-5.4-mini": 124,
+        "gpt-5.4": 7
+      },
+      "correct": 177,
+      "accuracy": 0.42142857142857143,
+      "accuracy_wilson_95": [0.37512567267053243, 0.4691557240016103],
+      "prompt_tokens": 79056,
+      "completion_tokens": 2004,
+      "modeled_cost_usd": 0.04296645,
+      "cost_per_correct_usd": 0.00024274830508474562,
+      "correct_per_usd": 4119.493232510485
+    },
+    "all_strong": {
+      "model_distribution": {"gpt-5.4": 420},
+      "correct": 276,
+      "accuracy": 0.6571428571428571,
+      "accuracy_wilson_95": [0.610507149832209, 0.7009300568235055],
+      "prompt_tokens": 79056,
+      "completion_tokens": 1704,
+      "modeled_cost_usd": 0.2232,
+      "cost_per_correct_usd": 0.0008086956521739128,
+      "correct_per_usd": 1236.5591397849466
+    }
+  },
+  "comparisons": {
+    "v1_5_vs_nano": {
+      "accuracy_difference": 0.04047619047619048,
+      "relative_accuracy_gain": 0.10625,
+      "cost_premium": 1.390351572605209,
+      "incremental_cost_per_additional_correct_usd": 0.0014700882352941178,
+      "both_correct": 125,
+      "v1_5_only_correct": 52,
+      "nano_only_correct": 35,
+      "neither_correct": 208,
+      "exact_two_sided_mcnemar_p": 0.08568897435916664
+    },
+    "v1_5_vs_strong": {
+      "quality_retention": 0.6413043478260869,
+      "accuracy_difference": -0.2357142857142857,
+      "cost_savings": 0.8074979838709677,
+      "both_correct": 153,
+      "v1_5_only_correct": 24,
+      "strong_only_correct": 123,
+      "neither_correct": 120,
+      "exact_two_sided_mcnemar_p": 3.1772595880751896e-17
+    }
+  },
+  "category_correct_out_of_30": {
+    "biology": {"all_nano": 18, "classifier_v1_5": 17, "all_strong": 26},
+    "business": {"all_nano": 7, "classifier_v1_5": 4, "all_strong": 12},
+    "chemistry": {"all_nano": 8, "classifier_v1_5": 10, "all_strong": 11},
+    "computer science": {"all_nano": 10, "classifier_v1_5": 14, "all_strong": 23},
+    "economics": {"all_nano": 14, "classifier_v1_5": 16, "all_strong": 21},
+    "engineering": {"all_nano": 7, "classifier_v1_5": 12, "all_strong": 14},
+    "health": {"all_nano": 16, "classifier_v1_5": 18, "all_strong": 25},
+    "history": {"all_nano": 10, "classifier_v1_5": 15, "all_strong": 20},
+    "law": {"all_nano": 8, "classifier_v1_5": 10, "all_strong": 17},
+    "math": {"all_nano": 8, "classifier_v1_5": 6, "all_strong": 17},
+    "other": {"all_nano": 9, "classifier_v1_5": 13, "all_strong": 23},
+    "philosophy": {"all_nano": 13, "classifier_v1_5": 15, "all_strong": 23},
+    "physics": {"all_nano": 8, "classifier_v1_5": 6, "all_strong": 17},
+    "psychology": {"all_nano": 24, "classifier_v1_5": 21, "all_strong": 27}
+  },
+  "outcome_sha256": {
+    "v1_5_and_strong": "D3525E1C5639540CDA34142E883BBF65CF712523150D51B6B7630BCB1A80D21C",
+    "all_nano": "B46575D0E18A8E36CFB06D13B2D890665C9FD86868072179D94CC2B2B633BF7E"
+  }
+}

@@ -1,0 +1,6 @@
+participant_id,interview_date,role_band,experience_band,llm_integration_frequency,current_e2e_latency_band,acceptable_router_overhead_band,latency_sensitive_cases,cost_quality_preference,desired_log_fields,privacy_debugging_concerns,consent_to_aggregate
+DEV-01,2026-08-15,backend_engineer,junior,daily,501-1000,>1000,interactive_chat;agent_loop,balanced,tier;score;signals;reason;model;provider;policy,prompt_content;response_content,yes
+DEV-02,2026-08-15,backend_engineer,junior,daily,501-1000,>1000,interactive_chat;agent_loop,balanced,tier;score;signals;reason;model;provider;policy,prompt_content;response_content,yes
+DEV-03,2026-08-17,data_scientist,junior,daily,501-1000,>1000,batch;agent_loop,cost,tier;score;signals;reason;model;provider;policy,prompt_content;response_content,yes
+DEV-04,2026-08-17,AI_engineer,junior,daily,501-1000,>1000,agent_loop;interactive_chat,quality,tier;score;signals;reason;model;provider;policy,prompt_content;response_content,yes
+DEV-05,2026-08-19,AI_engineer,mid,weekly,501-1000,>1000,agent_loop;batch,cost_first,cost;tokens;tier;model;provider;fallback_chain,retention;access_control,yes

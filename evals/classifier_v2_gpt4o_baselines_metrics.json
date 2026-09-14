@@ -1,0 +1,235 @@
+{
+  "benchmark_run": "classifier-v2-gpt4o-baselines-2026-08-27",
+  "source_commit": "d24c7b5fed734ebae91e29cc785dc48239f0fdd1",
+  "classifier": "v2",
+  "baselines": {
+    "low": "gpt-4o-mini",
+    "high": "gpt-4o"
+  },
+  "configuration": {
+    "models_yaml_changed": false,
+    "router_timeout_ms": 2500,
+    "providers": "live",
+    "baseline_classifier": "heuristic-v1",
+    "baseline_router_cost_usd": 0.0
+  },
+  "benchmarks": {
+    "mmlu_pro": {
+      "dataset": "mmlu_pro_stratified_420.jsonl",
+      "source_revision": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+      "n": 420,
+      "arms": {
+        "gpt_4o_mini": {
+          "correct": 174,
+          "accuracy": 0.4142857142857143,
+          "wilson_95": [0.3681597723, 0.4619653877],
+          "generation_cost_usd": 0.0126486,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 0.0126486,
+          "models": {"gpt-4o-mini": 420}
+        },
+        "classifier_v2": {
+          "correct": 164,
+          "accuracy": 0.3904761904761905,
+          "wilson_95": [0.3450132431, 0.4379244614],
+          "generation_cost_usd": 0.03913308,
+          "router_cost_usd": 0.019416,
+          "total_cost_usd": 0.05854908,
+          "models": {
+            "gpt-5.4-nano": 298,
+            "gpt-5.4-mini": 108,
+            "gpt-5.4": 4,
+            "llama-3.3-70b": 10
+          },
+          "tiers": {"T1": 308, "T2": 108, "T3": 4},
+          "v2_fallback_signal_count": 239
+        },
+        "gpt_4o": {
+          "correct": 193,
+          "accuracy": 0.4595238095238095,
+          "wilson_95": [0.4124444395, 0.5073368860],
+          "generation_cost_usd": 0.217605,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 0.217605,
+          "models": {"gpt-4o": 420}
+        }
+      },
+      "paired": {
+        "classifier_v2_vs_gpt_4o_mini": {
+          "both": 110,
+          "classifier_only": 54,
+          "baseline_only": 64,
+          "neither": 192,
+          "exact_two_sided_p": 0.40748553448890024
+        },
+        "classifier_v2_vs_gpt_4o": {
+          "both": 111,
+          "classifier_only": 53,
+          "baseline_only": 82,
+          "neither": 174,
+          "exact_two_sided_p": 0.015644196051848795
+        }
+      },
+      "comparisons": {
+        "classifier_cost_multiple_vs_low": 4.628898,
+        "classifier_cost_savings_vs_high": 0.730939,
+        "classifier_quality_retention_vs_high": 0.849741
+      }
+    },
+    "humaneval_plus": {
+      "dataset": "humanevalplus_full_164.jsonl",
+      "dataset_hash": "fe585eb4df8c88d844eeb463ea4d0302",
+      "grader": "evalplus==0.3.1",
+      "n": 164,
+      "arms": {
+        "gpt_4o_mini": {
+          "correct": 134,
+          "pass_at_1": 0.8170731707317073,
+          "wilson_95": [0.7508795738, 0.8687527908],
+          "prompt_tokens": 25800,
+          "completion_tokens": 17077,
+          "generation_cost_usd": 0.0141162,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 0.0141162,
+          "models": {"gpt-4o-mini": 164}
+        },
+        "classifier_v2": {
+          "correct": 143,
+          "pass_at_1": 0.8719512195121951,
+          "wilson_95": [0.8121751209, 0.9147013068],
+          "prompt_tokens": 25636,
+          "completion_tokens": 15576,
+          "generation_cost_usd": 0.08677795,
+          "router_cost_usd": 0.009897,
+          "total_cost_usd": 0.09667495,
+          "models": {"gpt-5.4-nano": 5, "gpt-5.4-mini": 159},
+          "tiers": {"T1": 5, "T2": 159},
+          "v2_fallback_signal_count": 60
+        },
+        "gpt_4o": {
+          "correct": 138,
+          "pass_at_1": 0.8414634146341463,
+          "wilson_95": [0.7778420785, 0.8894543141],
+          "prompt_tokens": 25800,
+          "completion_tokens": 17120,
+          "generation_cost_usd": 0.2357,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 0.2357,
+          "models": {"gpt-4o": 164}
+        }
+      },
+      "paired": {
+        "classifier_v2_vs_gpt_4o_mini": {
+          "both": 126,
+          "classifier_only": 17,
+          "baseline_only": 8,
+          "neither": 13,
+          "exact_two_sided_p": 0.10775214433670044
+        },
+        "classifier_v2_vs_gpt_4o": {
+          "both": 129,
+          "classifier_only": 14,
+          "baseline_only": 9,
+          "neither": 12,
+          "exact_two_sided_p": 0.4048728942871094
+        }
+      },
+      "comparisons": {
+        "classifier_cost_multiple_vs_low": 6.84851,
+        "classifier_cost_savings_vs_high": 0.589839,
+        "classifier_quality_retention_vs_high": 1.036232
+      }
+    },
+    "math_500": {
+      "dataset": "math500_full_500.jsonl",
+      "source_revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+      "dataset_sha256": "eac901cebec0c10729ba74738b38c7922c3f0729c04a3e563c8581bdc993d3ac",
+      "grader": "math-verify==0.9.0",
+      "n": 500,
+      "arms": {
+        "gpt_4o_mini": {
+          "correct": 299,
+          "accuracy": 0.598,
+          "wilson_95": [0.5544343696, 0.6400712597],
+          "prompt_tokens": 41847,
+          "completion_tokens": 291450,
+          "generation_cost_usd": 0.18114705,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 0.18114705,
+          "models": {"gpt-4o-mini": 500}
+        },
+        "classifier_v2": {
+          "correct": 324,
+          "accuracy": 0.648,
+          "wilson_95": [0.6051540371, 0.6885891581],
+          "prompt_tokens": 41347,
+          "completion_tokens": 129160,
+          "generation_cost_usd": 0.2529974,
+          "router_cost_usd": 0.021964,
+          "total_cost_usd": 0.2749614,
+          "models": {"gpt-5.4-nano": 409, "gpt-5.4-mini": 91},
+          "tiers": {"T1": 409, "T2": 91},
+          "v2_fallback_signal_count": 296,
+          "mean_router_latency_ms": 2312.01
+        },
+        "gpt_4o": {
+          "correct": 308,
+          "accuracy": 0.616,
+          "wilson_95": [0.5726388276, 0.6575923254],
+          "prompt_tokens": 41846,
+          "completion_tokens": 250713,
+          "generation_cost_usd": 2.611745,
+          "router_cost_usd": 0.0,
+          "total_cost_usd": 2.611745,
+          "models": {"gpt-4o": 500}
+        }
+      },
+      "paired": {
+        "classifier_v2_vs_gpt_4o_mini": {
+          "both": 273,
+          "classifier_only": 51,
+          "baseline_only": 26,
+          "neither": 150,
+          "exact_two_sided_p": 0.005870707889737202
+        },
+        "classifier_v2_vs_gpt_4o": {
+          "both": 284,
+          "classifier_only": 40,
+          "baseline_only": 24,
+          "neither": 152,
+          "exact_two_sided_p": 0.05994118956699923
+        }
+      },
+      "by_level": {
+        "1": {"n": 43, "gpt_4o_mini": 32, "classifier_v2": 33, "gpt_4o": 34},
+        "2": {"n": 90, "gpt_4o_mini": 62, "classifier_v2": 62, "gpt_4o": 62},
+        "3": {"n": 105, "gpt_4o_mini": 75, "classifier_v2": 77, "gpt_4o": 74},
+        "4": {"n": 128, "gpt_4o_mini": 81, "classifier_v2": 82, "gpt_4o": 76},
+        "5": {"n": 134, "gpt_4o_mini": 49, "classifier_v2": 70, "gpt_4o": 62}
+      },
+      "by_subject": {
+        "Algebra": {"n": 124, "gpt_4o_mini": 96, "classifier_v2": 94, "gpt_4o": 98},
+        "Counting & Probability": {"n": 38, "gpt_4o_mini": 24, "classifier_v2": 32, "gpt_4o": 27},
+        "Geometry": {"n": 41, "gpt_4o_mini": 19, "classifier_v2": 19, "gpt_4o": 20},
+        "Intermediate Algebra": {"n": 97, "gpt_4o_mini": 30, "classifier_v2": 48, "gpt_4o": 34},
+        "Number Theory": {"n": 62, "gpt_4o_mini": 58, "classifier_v2": 53, "gpt_4o": 57},
+        "Prealgebra": {"n": 82, "gpt_4o_mini": 62, "classifier_v2": 60, "gpt_4o": 62},
+        "Precalculus": {"n": 56, "gpt_4o_mini": 10, "classifier_v2": 18, "gpt_4o": 10}
+      },
+      "comparisons": {
+        "classifier_cost_multiple_vs_low": 1.5178905756,
+        "classifier_cost_savings_vs_high": 0.8947211922,
+        "classifier_quality_retention_vs_high": 1.051948052
+      }
+    }
+  },
+  "micro_summary": {
+    "n": 1084,
+    "gpt_4o_mini": {"correct": 607, "rate": 0.5599630996, "total_cost_usd": 0.20791185},
+    "classifier_v2": {"correct": 631, "rate": 0.5821033210, "total_cost_usd": 0.43018543},
+    "gpt_4o": {"correct": 639, "rate": 0.5894833948, "total_cost_usd": 3.06505},
+    "classifier_cost_multiple_vs_low": 2.0690760531,
+    "classifier_cost_savings_vs_high": 0.8596481526,
+    "warning": "The micro-average combines heterogeneous benchmarks and is descriptive only."
+  }
+}

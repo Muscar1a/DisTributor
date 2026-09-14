@@ -1,0 +1,2472 @@
+{
+  "benchmark": "HumanEval+",
+  "dataset_hash": "fe585eb4df8c88d844eeb463ea4d0302",
+  "n": 164,
+  "smart_valid": 164,
+  "strong_valid": 164,
+  "smart_pass_at_1": 0.8658536585365854,
+  "strong_pass_at_1": 0.8414634146341463,
+  "quality_retention": 1.028985507246377,
+  "results": [
+    {
+      "id": "HumanEval/1",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/0",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/2",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/3",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/4",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/5",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/6",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/7",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/8",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/9",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/10",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/11",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/12",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/13",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/14",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/15",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/16",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/17",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/18",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/19",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/20",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/21",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/22",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/23",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/24",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/25",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/26",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/27",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/28",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/29",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/30",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/31",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/33",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/34",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/35",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/32",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/36",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/37",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/38",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/39",
+      "smart": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/40",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/41",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/42",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/43",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/44",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/45",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/46",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/47",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/48",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/49",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/50",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/51",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/52",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/53",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/54",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/55",
+      "smart": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/56",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/57",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/58",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/59",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/60",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/61",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/62",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/63",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/64",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/65",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/66",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/67",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/68",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/69",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/70",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/71",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/72",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/73",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/74",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/75",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/76",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/78",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/77",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/79",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/80",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/81",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/82",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/83",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/84",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/85",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/86",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/87",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/88",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/89",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/90",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/91",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/92",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/93",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/94",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/95",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/96",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/97",
+      "smart": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/98",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/99",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/100",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/101",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/102",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/103",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/104",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/105",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/106",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/107",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/108",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/109",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/110",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/111",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/112",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/113",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/114",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/115",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/116",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/117",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/118",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/119",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/120",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/121",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/122",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/123",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/124",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/125",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/126",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/127",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/128",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/129",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/130",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/131",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/132",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/133",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/134",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/135",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/136",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/137",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/138",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/139",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/140",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/141",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/142",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/143",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/144",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/145",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/146",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/147",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/148",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/149",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/150",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/152",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/151",
+      "smart": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/153",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/154",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/155",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/156",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/157",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/158",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/159",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "fail",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/160",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/161",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/162",
+      "smart": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      },
+      "strong": {
+        "correct": true,
+        "base_status": "pass",
+        "plus_status": "pass",
+        "error": null
+      }
+    },
+    {
+      "id": "HumanEval/163",
+      "smart": {
+        "correct": false,
+        "base_status": "fail",
+        "plus_status": "timeout",
+        "error": null
+      },
+      "strong": {
+        "correct": false,
+        "base_status": "pass",
+        "plus_status": "timeout",
+        "error": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "benchmark": "MATH-500",
+  "n": 500,
+  "dataset": {
+    "upstream_revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "sha256": "4932706E8C10BB7F32087D3BEBB19A895D056C83BB04CCB25F038D04626828C2",
+    "levels": {"1": 43, "2": 90, "3": 105, "4": 128, "5": 134}
+  },
+  "grader": "math-verify==0.9.0",
+  "arms": {
+    "all_nano": {
+      "model_distribution": {"gpt-5.4-nano": 500},
+      "correct": 323,
+      "accuracy": 0.646,
+      "accuracy_wilson_95": [0.6031159977821284, 0.6866576948030984],
+      "prompt_tokens": 41347,
+      "completion_tokens": 135019,
+      "modeled_cost_usd": 0.17704315,
+      "cost_per_correct_usd": 0.0005481212074303406,
+      "correct_per_usd": 1824.4139917302646
+    },
+    "classifier_v1_5": {
+      "model_distribution": {
+        "gpt-5.4-nano": 405,
+        "gpt-5.4-mini": 95,
+        "gpt-5.4": 0
+      },
+      "correct": 318,
+      "accuracy": 0.636,
+      "accuracy_wilson_95": [0.5929376153133843, 0.6769885640810736],
+      "prompt_tokens": 41347,
+      "completion_tokens": 127317,
+      "modeled_cost_usd": 0.24985705,
+      "cost_per_correct_usd": 0.0007857139937106918,
+      "correct_per_usd": 1272.7277457250057
+    },
+    "all_strong": {
+      "model_distribution": {"gpt-5.4": 500},
+      "correct": 372,
+      "accuracy": 0.744,
+      "accuracy_wilson_95": [0.7039870300464813, 0.7802922918082812],
+      "prompt_tokens": 41347,
+      "completion_tokens": 132057,
+      "modeled_cost_usd": 2.0842225,
+      "cost_per_correct_usd": 0.005602748655913979,
+      "correct_per_usd": 178.4838231042991
+    }
+  },
+  "comparisons": {
+    "v1_5_vs_nano": {
+      "accuracy_difference": -0.010000000000000009,
+      "relative_accuracy_difference": -0.015479876160990726,
+      "cost_premium": 0.41127770263915875,
+      "both_correct": 289,
+      "v1_5_only_correct": 29,
+      "nano_only_correct": 34,
+      "neither_correct": 148,
+      "exact_two_sided_mcnemar_p": 0.6146550157654618
+    },
+    "v1_5_vs_strong": {
+      "quality_retention": 0.8548387096774194,
+      "accuracy_difference": -0.10799999999999998,
+      "cost_savings": 0.8801197808775215,
+      "both_correct": 311,
+      "v1_5_only_correct": 7,
+      "strong_only_correct": 61,
+      "neither_correct": 121,
+      "exact_two_sided_mcnemar_p": 7.387402755493211e-12
+    }
+  },
+  "level_results": {
+    "1": {"n": 43, "all_nano": 30, "classifier_v1_5": 31, "all_strong": 34},
+    "2": {"n": 90, "all_nano": 66, "classifier_v1_5": 65, "all_strong": 68},
+    "3": {"n": 105, "all_nano": 79, "classifier_v1_5": 75, "all_strong": 85},
+    "4": {"n": 128, "all_nano": 80, "classifier_v1_5": 78, "all_strong": 94},
+    "5": {"n": 134, "all_nano": 68, "classifier_v1_5": 69, "all_strong": 91}
+  },
+  "subject_results": {
+    "Algebra": {"n": 124, "all_nano": 98, "classifier_v1_5": 92, "all_strong": 102},
+    "Counting & Probability": {"n": 38, "all_nano": 31, "classifier_v1_5": 28, "all_strong": 34},
+    "Geometry": {"n": 41, "all_nano": 21, "classifier_v1_5": 22, "all_strong": 29},
+    "Intermediate Algebra": {"n": 97, "all_nano": 42, "classifier_v1_5": 45, "all_strong": 57},
+    "Number Theory": {"n": 62, "all_nano": 52, "classifier_v1_5": 50, "all_strong": 61},
+    "Prealgebra": {"n": 82, "all_nano": 62, "classifier_v1_5": 62, "all_strong": 64},
+    "Precalculus": {"n": 56, "all_nano": 17, "classifier_v1_5": 19, "all_strong": 25}
+  },
+  "outcome_sha256": {
+    "v1_5_and_strong": "85C4297DE8582FF65812EE611ECBDFC1C898B6ED3054C5FAB9A37E0667401814",
+    "all_nano": "D61837B00EB1CD4164AADDDB1DBC23FD0AA8400C1B844F677BAE45548846639B"
+  }
+}

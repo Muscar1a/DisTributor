@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  dashboard-build:
+    runs-on: [self-hosted, cohort3]
+    defaults:
+      run:
+        working-directory: src/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/dashboard/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          VITE_API_URL: http://localhost:8000
+
+  lint-and-test:
+    runs-on: [self-hosted, cohort3]
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: sr
+          POSTGRES_PASSWORD: smartroute
+          POSTGRES_DB: smartroute
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: ruff check src/
+
+      - name: Run tests
+        run: python -m pytest src/gateway/tests/ -v --tb=short
+        env:
+          APP_ENV: test
+          OPENAI_API_KEY: test-key
+          TEST_DATABASE_URL: postgresql+psycopg2://sr:smartroute@localhost:${{ job.services.postgres.ports['5432'] }}/smartroute
+          USE_MOCK_PROVIDERS: "true"

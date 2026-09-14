@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smartroute}
+      POSTGRES_DB: smartroute
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sr -d smartroute"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://sr:${POSTGRES_PASSWORD:-smartroute}@db:5432/smartroute
+      ADMIN_KEY: ${ADMIN_KEY:-local-admin-key}
+      GATEWAY_DEV_KEY: ${GATEWAY_DEV_KEY:-sr-local-dev-key}
+      USE_MOCK_PROVIDERS: ${USE_MOCK_PROVIDERS:-true}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/readyz', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  pgdata:

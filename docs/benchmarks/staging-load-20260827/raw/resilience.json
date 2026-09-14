@@ -1,0 +1,82 @@
+[
+    {
+        "name":  "forced provider 429",
+        "status":  502,
+        "expected":  "502-502",
+        "code":  "",
+        "latency_ms":  2309,
+        "passed":  true
+    },
+    {
+        "name":  "forced provider 500",
+        "status":  502,
+        "expected":  "502-502",
+        "code":  "",
+        "latency_ms":  1916,
+        "passed":  true
+    },
+    {
+        "name":  "circuit trigger 1",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  1550,
+        "passed":  true
+    },
+    {
+        "name":  "circuit trigger 2",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  1553,
+        "passed":  true
+    },
+    {
+        "name":  "circuit trigger 3",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  1552,
+        "passed":  true
+    },
+    {
+        "name":  "circuit trigger 4",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  945,
+        "passed":  true
+    },
+    {
+        "name":  "circuit trigger 5",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  950,
+        "passed":  true
+    },
+    {
+        "name":  "unaffected model",
+        "status":  502,
+        "expected":  "200-200",
+        "code":  "",
+        "latency_ms":  950,
+        "passed":  false
+    },
+    {
+        "name":  "cheap model while open",
+        "status":  502,
+        "expected":  "400-502",
+        "code":  "",
+        "latency_ms":  951,
+        "passed":  true
+    },
+    {
+        "name":  "cheap model after recovery",
+        "status":  200,
+        "expected":  "200-200",
+        "code":  null,
+        "latency_ms":  128858,
+        "passed":  true
+    }
+]

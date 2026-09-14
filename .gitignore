@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (never commit large data)
+data/
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Test coverage
+htmlcov/
+.coverage
+coverage.xml
+
+# Docker
+docker-compose.override.yml
+
+# Node (frontend)
+node_modules/
+.vercel/
+src/dashboard/.env.*
+!src/dashboard/.env.example
+.next/
+out/
+.nuxt/
+
+# Build
+*.pyc
+*.pyo
+
+# AI logs — tracked structure, ignored content
+.ai-log/*.jsonl
+.ai-log/archive/
+
+# Raw eval responses can contain model/user content and are reproducible run artifacts.
+evals/results/*.jsonl
+src/evals/results/*.jsonl
+# Per-run config fingerprint sidecar for run_full_eval.py resume safety (#211) — tied
+# to a local raw.jsonl that is itself ignored above, no standalone value to commit.
+src/evals/results/*.fingerprint.json
+
+AGENTS.md
+CLAUDE.md
+
+# CodeGraph — personal dev tool, không commit lên team repo
+.codegraph/
+.mcp.json
+GEMINI.md
+.commandcode/
+# Issue #52 — eval tooling & datasets are tracked for reproducibility
+
+Mentor duty/
+loadtests/results/
+
+docs/review/

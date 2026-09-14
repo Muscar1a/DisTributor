@@ -1,0 +1,82 @@
+name: contract
+
+# Gate cho contract F1 (pinned). Mục đích:
+#  1. Spec luôn hợp lệ OpenAPI 3.1 — không merge được spec sai cú pháp.
+#  2. Breaking change với bản trên `main` bị chặn, buộc phải bump /v2 hoặc được approve.
+#  3. Swagger do FastAPI sinh ra phải khớp spec đã chốt (bật từ khi có endpoint ở M1).
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [main]
+
+jobs:
+  openapi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install validator
+        run: pip install openapi-spec-validator
+
+      - name: Validate spec
+        run: openapi-spec-validator docs/design/v1_f1.yaml
+
+      # oasdiff so bản trong PR với bản trên main. Chỉ fail khi có breaking change;
+      # thêm optional field / thêm endpoint là backward-compatible và pass.
+      - name: Fetch base spec
+        if: github.event_name == 'pull_request'
+        run: |
+          git show origin/main:docs/design/v1_f1.yaml > /tmp/base.yaml 2>/dev/null \
+            || echo "no base spec on main yet" > /tmp/no-base
+
+      - name: Breaking change check
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ -f /tmp/no-base ]; then
+            echo "Chưa có spec trên main — bỏ qua diff ở PR đầu tiên."
+            exit 0
+          fi
+          docker run --rm -v /tmp:/specs -v "$PWD/docs/design:/pr" \
+            tufin/oasdiff breaking /specs/base.yaml /pr/v1_f1.yaml --fail-on ERR
+
+  # Bật job này khi gateway đã có endpoint chạy được (M1). Trước đó để `if: false`.
+  implementation-matches-spec:
+    runs-on: ubuntu-latest
+    if: false
+    env:
+      USE_MOCK_PROVIDERS: 'true'
+      GATEWAY_DEV_KEY: 'sr-ci-test-key'
+      ADMIN_KEY: 'ci-admin-key'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install gateway
+        run: pip install -e ./gateway
+
+      # FastAPI sinh /openapi.json từ code. So với spec đã chốt: lệch = bug,
+      # và theo 05_interfaces.md §E thì sửa theo tài liệu, không sửa tài liệu theo code.
+      - name: Export generated spec
+        run: |
+          python - <<'PY'
+          import json
+          from gateway.app.main import app
+          with open('/tmp/generated.json', 'w') as f:
+              json.dump(app.openapi(), f)
+          PY
+
+      - name: Compare with pinned contract
+        run: |
+          docker run --rm -v /tmp:/gen -v "$PWD/docs/design:/spec" \
+            tufin/oasdiff breaking /spec/v1_f1.yaml /gen/generated.json --fail-on ERR

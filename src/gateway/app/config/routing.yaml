@@ -1,0 +1,13 @@
+# routing.yaml — Session Router parameters (docs/design/08_adaptive_routing.md §5)
+# Tunable via /admin/config like tier thresholds.
+# Values are conservative priors — bias toward over-routing (§11.4).
+
+alpha: 0.45                 # EMA weight (higher = more weight on current turn)
+deescalate_margin: 15       # must be THIS many points below tier threshold to de-escalate
+dwell_turns: 1              # min turns after escalation before de-escalation allowed
+max_session_escalations: 3  # budget per session to prevent loops / exploitation
+failure_boost: 15           # score bonus when failure_signal detected
+streak_boost: 10            # additional bonus per failure streak level (cap 2)
+similarity_threshold: 0.85  # jaccard threshold for resubmission detection
+session_routing_ttl_s: 7200 # 2h — routing state expires after this idle time
+router_cost_budget_pct: 2.0 # §9.1 cost circuit: degrade when Σrouter_cost/Σcost > this (24h window)

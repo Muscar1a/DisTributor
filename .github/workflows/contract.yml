@@ -1,0 +1,45 @@
+name: OpenAPI contract
+
+on:
+  pull_request:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: [self-hosted, cohort3]
+    env:
+      USE_MOCK_PROVIDERS: "true"
+      GATEWAY_DEV_KEY: "sr-ci-test-key"
+      ADMIN_KEY: "ci-admin-key"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt openapi-spec-validator
+      - name: Validate pinned specification
+        run: openapi-spec-validator docs/design/v1_f1.yaml
+      - name: Export FastAPI specification
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from src.gateway.app.main import app
+          Path("generated-openapi.json").write_text(
+              json.dumps(app.openapi(), indent=2), encoding="utf-8"
+          )
+          PY
+      - name: Check implementation compatibility
+        run: |
+          docker run --rm \
+            -v "$PWD/docs/design:/contract:ro" \
+            -v "$PWD/generated-openapi.json:/generated-openapi.json:ro" \
+            tufin/oasdiff:latest breaking \
+            /contract/v1_f1.yaml /generated-openapi.json --fail-on ERR

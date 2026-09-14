@@ -1,0 +1,90 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: [self-hosted, cohort3]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,format=short
+
+      - name: Resolve application build metadata
+        id: build_info
+        shell: bash
+        run: |
+          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+          version="$(awk -F'"' '/^version = / { print $2; exit }' src/gateway/pyproject.toml)"
+          : "${version:?Unable to read project version}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            APP_VERSION=${{ steps.build_info.outputs.version }}
+            GIT_COMMIT_SHA=${{ github.sha }}
+            BUILD_TIMESTAMP=${{ steps.build_info.outputs.timestamp }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: [self-hosted, cohort3]
+    environment: production
+    env:
+      RENDER_GATEWAY_URL: ${{ vars.RENDER_GATEWAY_URL }}
+      VERCEL_PRODUCTION_ORIGIN: ${{ vars.VERCEL_PRODUCTION_ORIGIN }}
+      ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate production smoke-test configuration
+        shell: bash
+        run: |
+          if [ -z "$ADMIN_KEY" ]; then
+            echo "::error::Set ADMIN_KEY in the GitHub production environment secrets."
+            exit 1
+          fi
+      - name: Trigger Render Deploy Webhook
+        run: |
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_WEBHOOK_URL }}"
+      - name: Smoke test Vercel to Render admin API
+        run: python scripts/smoke_admin_api.py

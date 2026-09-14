@@ -1,0 +1,13 @@
+# ── Routing & Classifier Configuration ─────────────────────────────────────────
+routing:
+  use_mock_providers: false         # true -> chỉ MockAdapter (CI / FE dev, không cần key nào)
+  max_input_tokens: 8000           # vượt -> 400 context_too_long
+  max_messages: 50                  # vượt -> 400 too_many_messages
+  router_timeout_ms: 4000           # trần thời gian classifier (ms) — nới từ 2500 (doc 13 §7.1: giảm timeout-fallback)
+  request_timeout_s: 60             # timeout mỗi lần gọi provider (s)
+  classifier_v2_model: gpt-4.1-nano # Model classifier v2 — non-reasoning cho latency thấp (doc 13 §7.1)
+
+# ── Circuit Breaker Configuration ─────────────────────────────────────────────
+circuit_breaker:
+  error_threshold: 5             # số lỗi liên tiếp để mở circuit
+  open_seconds: 300              # thời gian circuit ở trạng thái OPEN (s)

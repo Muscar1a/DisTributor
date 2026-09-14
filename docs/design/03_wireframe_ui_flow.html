@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRoute Gateway — Wireframe & UI Flow (Gate 1)</title>
+<style>
+  :root{
+    --paper:#F7F7F5; --ink:#16181D; --muted:#6B7280;
+    --line:#C4C9D0; --fill:#E9ECEF; --fill2:#F1F3F5;
+    --accent:#2B5CE6;
+    --t1:#2E9E5B; --t2:#C88A04; --t3:#CE4444;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;padding:40px 20px 80px}
+  .doc{max-width:960px;margin:0 auto}
+
+  /* ===== Cover ===== */
+  .cover{border:1.5px solid var(--ink);padding:28px 32px;margin-bottom:48px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .cover h1{font-size:26px;margin:6px 0 4px;letter-spacing:-.01em}
+  .cover p{color:var(--muted);font-size:14px}
+  .cover .meta{display:flex;gap:24px;margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--ink);flex-wrap:wrap}
+  .legendbar{display:flex;gap:18px;align-items:center;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:11px;color:var(--muted);flex-wrap:wrap}
+  .swatch{display:inline-block;width:22px;height:12px;border:1.5px solid var(--ink);vertical-align:-1px;margin-right:6px}
+  .swatch.dash{border-style:dashed;border-color:var(--muted)}
+  .swatch.bar{background:var(--fill);border:none;height:8px}
+
+  /* ===== Plates ===== */
+  .plate{margin-bottom:56px}
+  .plate-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .plate-no{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--accent)}
+  .plate-head h2{font-size:19px}
+  .plate-sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+
+  .wf{border:1.5px solid var(--ink);background:#fff;padding:0;overflow:hidden}
+  .wf-top{display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--ink);padding:8px 12px;background:var(--fill2)}
+  .wf-dots span{display:inline-block;width:9px;height:9px;border:1.5px solid var(--ink);border-radius:50%;margin-right:4px}
+  .wf-url{flex:1;border:1px solid var(--line);background:#fff;font-family:var(--mono);font-size:11px;color:var(--muted);padding:3px 10px}
+
+  .app{display:flex;min-height:300px}
+  .nav{width:150px;border-right:1.5px solid var(--ink);padding:12px 10px;background:var(--fill2);flex-shrink:0}
+  .nav .logo{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:12px}
+  .nav a{display:block;font-size:12.5px;padding:6px 8px;color:var(--ink);text-decoration:none;border:1px solid transparent;margin-bottom:2px}
+  .nav a.on{border:1.5px solid var(--ink);background:#fff;font-weight:600}
+  .main{flex:1;padding:16px;min-width:0}
+
+  .box{border:1.5px solid var(--ink);background:#fff;padding:12px}
+  .box.dashed{border:1.5px dashed var(--muted);background:var(--fill2)}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .col{flex:1;min-width:180px}
+  .tl{height:9px;background:var(--fill);margin:6px 0}
+  .tl.w70{width:70%}.tl.w50{width:50%}.tl.w85{width:85%}.tl.w30{width:30%}
+  .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .btn{display:inline-block;border:1.5px solid var(--ink);padding:6px 14px;font-size:12px;font-weight:600;background:#fff}
+  .btn.pri{background:var(--ink);color:#fff}
+  .input{border:1.5px solid var(--ink);background:#fff;padding:8px 10px;font-size:12px;color:var(--muted)}
+  .select{border:1.5px solid var(--ink);background:#fff;padding:6px 10px;font-size:12px;display:inline-block}
+  .select::after{content:" ▾"}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;padding:2px 8px;border:1.5px solid;border-radius:10px}
+  .chip.t1{color:var(--t1);border-color:var(--t1)}
+  .chip.t2{color:var(--t2);border-color:var(--t2)}
+  .chip.t3{color:var(--t3);border-color:var(--t3)}
+
+  /* annotation pins */
+  .pin{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:10.5px;font-weight:700;flex-shrink:0;vertical-align:middle}
+  .notes{margin-top:14px;border-left:2px solid var(--accent);padding:2px 0 2px 14px}
+  .notes li{list-style:none;display:flex;gap:9px;font-size:13px;margin-bottom:7px;color:var(--ink)}
+  .notes .fr{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+
+  table.wft{width:100%;border-collapse:collapse;font-size:11.5px}
+  table.wft th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1.5px solid var(--ink);padding:6px 8px}
+  table.wft td{border-bottom:1px solid var(--line);padding:6px 8px;color:var(--ink)}
+  .bar-cell{height:8px;background:var(--fill);width:80%}
+
+  .kpi{flex:1;min-width:130px;border:1.5px solid var(--ink);background:#fff;padding:10px 12px}
+  .kpi .v{font-size:20px;font-weight:700;font-family:var(--mono)}
+  .chart{position:relative;height:130px;border:1.5px dashed var(--muted);background:var(--fill2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+  /* threshold slider */
+  .thresh{display:flex;height:26px;border:1.5px solid var(--ink);font-family:var(--mono);font-size:10.5px;font-weight:700;color:#fff;text-align:center;line-height:26px}
+  .thresh .s1{flex:30;background:var(--t1)}
+  .thresh .s2{flex:30;background:var(--t2)}
+  .thresh .s3{flex:40;background:var(--t3)}
+  .thresh-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:3px}
+
+  /* flow map */
+  .flowwrap{border:1.5px solid var(--ink);background:#fff;padding:18px;overflow-x:auto}
+  svg text{font-family:var(--sans)}
+  svg .mono{font-family:var(--mono)}
+
+  @media (max-width:640px){ .app{flex-direction:column} .nav{width:100%;border-right:none;border-bottom:1.5px solid var(--ink);display:flex;gap:6px;flex-wrap:wrap} .nav .logo{width:100%} }
+  @media print{ body{padding:0} .plate{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ================= COVER ================= -->
+  <header class="cover">
+    <div class="eyebrow">Gate 1 · Deliverable 03 · Wireframe / UI Flow</div>
+    <h1>SmartRoute Gateway — Bộ khung giao diện</h1>
+    <p>Wireframe độ trung thực thấp (lo-fi) cho 5 màn hình của dashboard quản trị + sơ đồ luồng màn hình. Mỗi chú thích được gắn mã yêu cầu (FR-xx) trong PRD để bám sát khi phát triển.</p>
+    <div class="meta"><span>v1.0</span><span>02/08/2026</span><span>Tham chiếu: 02_prd.md</span></div>
+    <div class="legendbar">
+      <span>QUY ƯỚC:</span>
+      <span><span class="swatch"></span>khối chức năng</span>
+      <span><span class="swatch dash"></span>placeholder / vùng động</span>
+      <span><span class="swatch bar"></span>dòng văn bản</span>
+      <span><span class="pin">n</span>&nbsp;chú thích hành vi</span>
+      <span><span class="chip t1">T1</span> <span class="chip t2">T2</span> <span class="chip t3">T3</span>&nbsp;tier độ khó</span>
+    </div>
+  </header>
+
+  <!-- ================= PLATE 00 — UI FLOW ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 00</span><h2>Sơ đồ luồng màn hình (UI Flow)</h2></div>
+    <p class="plate-sub">Một trang đăng nhập đơn giản bằng admin key, sau đó vào Dashboard làm trung tâm điều hướng. Playground là nơi demo trực tiếp hành vi định tuyến.</p>
+    <div class="flowwrap">
+      <svg viewBox="0 0 880 300" width="100%" role="img" aria-label="Sơ đồ luồng màn hình">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#16181D"/>
+          </marker>
+        </defs>
+        <!-- Login -->
+        <rect x="20" y="120" width="150" height="60" fill="#fff" stroke="#16181D" stroke-width="1.5"/>
+        <text x="95" y="145" text-anchor="middle" font-size="13" font-weight="600">Đăng nhập</text>
+        <text x="95" y="163" text-anchor="middle" font-size="10.5" fill="#6B7280" class="mono">admin key (.env)</text>
+        <!-- Dashboard -->
+        <rect x="250" y="110" width="170" height="80" fill="#E9ECEF" stroke="#16181D" stroke-width="1.5"/>
+        <text x="335" y="145" text-anchor="middle" font-size="13" font-weight="700">Dashboard</text>
+        <text x="335" y="163" text-anchor="middle" font-size="10.5" fill="#6B7280">KPI · biểu đồ · savings</text>
+        <!-- 4 targets -->
+        <rect x="530" y="16" width="160" height="52" fill="#fff" stroke="#16181D" stroke-width="1.5"/>
+        <text x="610" y="38" text-anchor="middle" font-size="12.5" font-weight="600">Playground</text>
+        <text x="610" y="54" text-anchor="middle" font-size="10" fill="#6B7280">test prompt → routing</text>
+        <rect x="530" y="90" width="160" height="52" fill="#fff" stroke="#16181D" stroke-width="1.5"/>
+        <text x="610" y="112" text-anchor="middle" font-size="12.5" font-weight="600">Request Logs</text>
+        <text x="610" y="128" text-anchor="middle" font-size="10" fill="#6B7280">lịch sử + lý do routing</text>
+        <rect x="530" y="164" width="160" height="52" fill="#fff" stroke="#16181D" stroke-width="1.5"/>
+        <text x="610" y="186" text-anchor="middle" font-size="12.5" font-weight="600">Routing Config</text>
+        <text x="610" y="202" text-anchor="middle" font-size="10" fill="#6B7280">ngưỡng · policy · model</text>
+        <rect x="530" y="238" width="160" height="52" fill="#fff" stroke="#16181D" stroke-width="1.5"/>
+        <text x="610" y="260" text-anchor="middle" font-size="12.5" font-weight="600">Settings / Keys</text>
+        <text x="610" y="276" text-anchor="middle" font-size="10" fill="#6B7280">gateway keys · providers</text>
+        <!-- detail modal -->
+        <rect x="740" y="90" width="120" height="52" fill="#F1F3F5" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="800" y="112" text-anchor="middle" font-size="11.5" font-weight="600">Chi tiết request</text>
+        <text x="800" y="127" text-anchor="middle" font-size="9.5" fill="#6B7280">modal / expand</text>
+        <!-- arrows -->
+        <line x1="170" y1="150" x2="248" y2="150" stroke="#16181D" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="420" y1="128" x2="528" y2="46" stroke="#16181D" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="420" y1="142" x2="528" y2="116" stroke="#16181D" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="420" y1="160" x2="528" y2="188" stroke="#16181D" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="420" y1="175" x2="528" y2="262" stroke="#16181D" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="690" y1="116" x2="738" y2="116" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- side note -->
+        <text x="20" y="30" font-size="11" fill="#2B5CE6" class="mono">* Client bên ngoài gọi thẳng API /v1/chat/completions — không qua UI này.</text>
+        <text x="20" y="48" font-size="11" fill="#2B5CE6" class="mono">* Thanh điều hướng trái xuất hiện ở mọi màn hình sau đăng nhập.</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= PLATE 01 — PLAYGROUND ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 01</span><h2>Playground — Test định tuyến</h2></div>
+    <p class="plate-sub">Màn hình demo chính ở Gate 2: gõ prompt, thấy ngay hệ thống chấm điểm và chọn model nào, tốn bao nhiêu.</p>
+    <div class="wf">
+      <div class="wf-top"><span class="wf-dots"><span></span><span></span><span></span></span><span class="wf-url">smartroute.local/playground</span></div>
+      <div class="app">
+        <nav class="nav">
+          <div class="logo">◆ SMARTROUTE</div>
+          <a href="#">Dashboard</a><a href="#" class="on">Playground</a><a href="#">Logs</a><a href="#">Config</a><a href="#">Settings</a>
+        </nav>
+        <div class="main">
+          <div class="row">
+            <div class="col">
+              <div class="lbl"><span class="pin">1</span> Prompt</div>
+              <div class="input" style="height:110px">Nhập prompt tại đây… (VD: "Viết hàm Python kiểm tra số nguyên tố và giải thích độ phức tạp")</div>
+              <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">
+                <span class="select"><span class="pin">2</span> Policy: Balanced</span>
+                <span class="select"><span class="pin">3</span> Override: Auto</span>
+                <span class="btn pri">Gửi</span>
+                <span class="btn">Xóa</span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="lbl"><span class="pin">4</span> Quyết định định tuyến</div>
+              <div class="box">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                  <span class="chip t3">T3 · HARD</span>
+                  <span style="font-family:var(--mono);font-size:11px">score 72/100</span>
+                </div>
+                <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px">
+                  signals: code, multi_step<br>
+                  model: claude-sonnet @ anthropic<br>
+                  cost: $0.00342 · latency: 2.4s (router 41ms)<br>
+                  fallback: 0
+                </div>
+              </div>
+              <div class="lbl" style="margin-top:12px"><span class="pin">5</span> Response</div>
+              <div class="box dashed" style="min-height:80px">
+                <div class="tl w85"></div><div class="tl w70"></div><div class="tl w50"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><span class="pin">1</span><span>Ô nhập prompt nhiều dòng; hỗ trợ dán ngữ cảnh dài (tín hiệu độ khó).</span><span class="fr">FR-01</span></li>
+      <li><span class="pin">2</span><span>Chọn policy cho riêng request này (cost-first / balanced / quality-first), gửi qua extension <code>smartroute.policy</code>.</span><span class="fr">FR-11</span></li>
+      <li><span class="pin">3</span><span>Override: ép model hoặc tier cụ thể — phục vụ demo so sánh chất lượng giữa các tier.</span><span class="fr">FR-08</span></li>
+      <li><span class="pin">4</span><span>Thẻ giải thích quyết định: điểm, tier, tín hiệu kích hoạt, model/provider, cost, latency, số lần fallback — lấy từ trường <code>smartroute</code> trong response.</span><span class="fr">FR-02·05·06</span></li>
+      <li><span class="pin">5</span><span>Vùng response hỗ trợ streaming (chữ hiện dần) từ Gate 3.</span><span class="fr">FR-15</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= PLATE 02 — DASHBOARD ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 02</span><h2>Dashboard — Chi phí & hiệu quả</h2></div>
+    <p class="plate-sub">Trả lời câu hỏi trung tâm của đề tài: gateway đã tiết kiệm bao nhiêu so với dùng toàn model cao cấp?</p>
+    <div class="wf">
+      <div class="wf-top"><span class="wf-dots"><span></span><span></span><span></span></span><span class="wf-url">smartroute.local/dashboard</span></div>
+      <div class="app">
+        <nav class="nav">
+          <div class="logo">◆ SMARTROUTE</div>
+          <a href="#" class="on">Dashboard</a><a href="#">Playground</a><a href="#">Logs</a><a href="#">Config</a><a href="#">Settings</a>
+        </nav>
+        <div class="main">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+            <span class="lbl" style="margin:0"><span class="pin">1</span> Khoảng thời gian</span>
+            <span class="select">7 ngày qua</span>
+          </div>
+          <div class="row">
+            <div class="kpi"><div class="lbl">Requests</div><div class="v">1,284</div></div>
+            <div class="kpi"><div class="lbl">Tổng chi phí</div><div class="v">$3.41</div></div>
+            <div class="kpi" style="border-color:var(--accent)"><div class="lbl" style="color:var(--accent)"><span class="pin">2</span> Tiết kiệm vs premium</div><div class="v" style="color:var(--accent)">−54%</div></div>
+            <div class="kpi"><div class="lbl">Latency TB / router</div><div class="v">1.9s / 38ms</div></div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div class="col">
+              <div class="lbl"><span class="pin">3</span> Chi phí theo ngày: thực tế vs giả định all-premium</div>
+              <div class="chart">[ line chart · 2 đường ]</div>
+            </div>
+            <div class="col" style="max-width:230px">
+              <div class="lbl"><span class="pin">4</span> Phân bố tier</div>
+              <div class="chart">[ donut T1/T2/T3 ]</div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div class="col">
+              <div class="lbl">Tỉ trọng provider</div>
+              <div class="chart" style="height:90px">[ bar ngang ]</div>
+            </div>
+            <div class="col">
+              <div class="lbl"><span class="pin">5</span> Request gần nhất</div>
+              <table class="wft">
+                <tr><th>Giờ</th><th>Tier</th><th>Model</th><th>Cost</th></tr>
+                <tr><td>14:02</td><td><span class="chip t1">T1</span></td><td>flash-lite</td><td>$0.0001</td></tr>
+                <tr><td>14:01</td><td><span class="chip t3">T3</span></td><td>sonnet</td><td>$0.0034</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><span class="pin">1</span><span>Bộ lọc thời gian áp cho toàn trang; gọi <code>GET /admin/stats?from&amp;to</code>.</span><span class="fr">FR-13</span></li>
+      <li><span class="pin">2</span><span>KPI chủ đạo của đề tài: savings % = 1 − (cost thực tế / cost nếu mọi request chạy model premium, tính lại từ token log × pricing.yaml).</span><span class="fr">FR-05·13</span></li>
+      <li><span class="pin">3</span><span>Hai đường trên cùng biểu đồ để thấy khoảng cách tiết kiệm theo thời gian.</span><span class="fr">FR-13</span></li>
+      <li><span class="pin">4</span><span>Donut xác nhận giả thuyết phân bố (~phần lớn request là T1/T2).</span><span class="fr">FR-13</span></li>
+      <li><span class="pin">5</span><span>Bảng rút gọn, bấm dòng → nhảy sang Logs với filter tương ứng.</span><span class="fr">FR-13</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= PLATE 03 — ROUTING CONFIG ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 03</span><h2>Routing Config — Ngưỡng & ánh xạ model</h2></div>
+    <p class="plate-sub">Nơi admin điều khiển "bộ não" định tuyến mà không cần sửa code: kéo ngưỡng tier, đổi model từng tier, sắp thứ tự fallback.</p>
+    <div class="wf">
+      <div class="wf-top"><span class="wf-dots"><span></span><span></span><span></span></span><span class="wf-url">smartroute.local/config</span></div>
+      <div class="app">
+        <nav class="nav">
+          <div class="logo">◆ SMARTROUTE</div>
+          <a href="#">Dashboard</a><a href="#">Playground</a><a href="#">Logs</a><a href="#" class="on">Config</a><a href="#">Settings</a>
+        </nav>
+        <div class="main">
+          <div class="lbl"><span class="pin">1</span> Policy mặc định</div>
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <span class="btn">Cost-first</span><span class="btn pri">Balanced</span><span class="btn">Quality-first</span>
+          </div>
+          <div class="lbl"><span class="pin">2</span> Ngưỡng điểm độ khó (kéo mốc để chỉnh)</div>
+          <div class="thresh"><div class="s1">T1 · EASY</div><div class="s2">T2 · MEDIUM</div><div class="s3">T3 · HARD</div></div>
+          <div class="thresh-scale"><span>0</span><span>30</span><span>60</span><span>100</span></div>
+          <div class="lbl" style="margin-top:16px"><span class="pin">3</span> Ánh xạ model theo tier</div>
+          <table class="wft">
+            <tr><th>Tier</th><th>Primary</th><th><span class="pin">4</span> Fallback (kéo-thả thứ tự)</th></tr>
+            <tr><td><span class="chip t1">T1</span></td><td class="mono">gemini-flash-lite ▾</td><td>⠿ gpt-mini &nbsp; ⠿ llama-70b-groq &nbsp; ⠿ ollama-local</td></tr>
+            <tr><td><span class="chip t2">T2</span></td><td class="mono">gpt-mini ▾</td><td>⠿ gemini-flash &nbsp; ⠿ claude-haiku</td></tr>
+            <tr><td><span class="chip t3">T3</span></td><td class="mono">claude-sonnet ▾</td><td>⠿ gpt-full &nbsp; ⠿ gemini-pro</td></tr>
+          </table>
+          <div style="display:flex;gap:8px;margin-top:14px;align-items:center">
+            <span class="btn pri"><span class="pin">5</span> Lưu cấu hình</span>
+            <span class="btn">Khôi phục mặc định</span>
+            <span style="font-family:var(--mono);font-size:10.5px;color:var(--muted)">Cập nhật lần cuối: 02/08 13:40</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><span class="pin">1</span><span>Policy mặc định áp cho request không tự khai policy.</span><span class="fr">FR-11</span></li>
+      <li><span class="pin">2</span><span>Thanh 0–100 với 2 mốc kéo được (30, 60 mặc định); đổi mốc = đổi hành vi phân tier ngay.</span><span class="fr">FR-02·14</span></li>
+      <li><span class="pin">3</span><span>Dropdown model lấy từ danh sách adapter đã khai báo; thêm provider mới → tự xuất hiện.</span><span class="fr">FR-03·04</span></li>
+      <li><span class="pin">4</span><span>Thứ tự fallback chính là thứ tự thử lại khi lỗi 429/5xx/timeout.</span><span class="fr">FR-09</span></li>
+      <li><span class="pin">5</span><span>Lưu → <code>PUT /admin/config</code>, ghi DB + reload runtime không cần restart.</span><span class="fr">FR-14</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= PLATE 04 — LOGS ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 04</span><h2>Request Logs — Giải thích từng quyết định</h2></div>
+    <p class="plate-sub">Bằng chứng minh bạch cho reviewer: mỗi request cho biết vì sao nó được chấm điểm và route như vậy.</p>
+    <div class="wf">
+      <div class="wf-top"><span class="wf-dots"><span></span><span></span><span></span></span><span class="wf-url">smartroute.local/logs</span></div>
+      <div class="app">
+        <nav class="nav">
+          <div class="logo">◆ SMARTROUTE</div>
+          <a href="#">Dashboard</a><a href="#">Playground</a><a href="#" class="on">Logs</a><a href="#">Config</a><a href="#">Settings</a>
+        </nav>
+        <div class="main">
+          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+            <span class="select"><span class="pin">1</span> 7 ngày</span>
+            <span class="select">Tier: Tất cả</span>
+            <span class="select">Provider: Tất cả</span>
+            <span class="select">Trạng thái: Tất cả</span>
+            <span class="input" style="flex:1;min-width:120px">Tìm theo request id…</span>
+          </div>
+          <table class="wft">
+            <tr><th>Thời gian</th><th><span class="pin">2</span> Score</th><th>Tier</th><th>Model @ provider</th><th>Tokens</th><th>Cost</th><th>Latency</th><th><span class="pin">3</span> FB</th><th>Status</th></tr>
+            <tr><td>14:02:11</td><td class="mono">12</td><td><span class="chip t1">T1</span></td><td class="mono">flash-lite @ google</td><td>85</td><td>$0.0001</td><td>0.6s</td><td>0</td><td>ok</td></tr>
+            <tr style="background:var(--fill2)"><td>14:01:47</td><td class="mono">72</td><td><span class="chip t3">T3</span></td><td class="mono">sonnet @ anthropic</td><td>1,240</td><td>$0.0034</td><td>2.4s</td><td>0</td><td>ok</td></tr>
+            <tr><td colspan="9" style="background:#fff">
+              <div class="box dashed" style="margin:4px 0">
+                <span class="lbl"><span class="pin">4</span> Chi tiết mở rộng</span>
+                <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">signals: [code +22, multi_step +15, length +18] · policy: balanced · chain thử: sonnet ✓ · router 41ms · prompt: (đã ẩn — LOG_CONTENT=false)</span>
+              </div>
+            </td></tr>
+            <tr><td>13:58:02</td><td class="mono">55</td><td><span class="chip t2">T2</span></td><td class="mono">gemini-flash @ google</td><td>640</td><td>$0.0006</td><td>1.7s</td><td style="color:var(--t3);font-weight:700">1</td><td>ok</td></tr>
+          </table>
+          <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px">
+            <span class="btn">‹</span><span class="btn pri">1</span><span class="btn">2</span><span class="btn">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><span class="pin">1</span><span>Bộ lọc kết hợp; đồng bộ với query <code>GET /admin/requests</code>.</span><span class="fr">FR-05</span></li>
+      <li><span class="pin">2</span><span>Điểm độ khó hiển thị trực tiếp — cột dùng để kiểm tra routing accuracy khi eval.</span><span class="fr">FR-02·18</span></li>
+      <li><span class="pin">3</span><span>FB = số lần fallback; &gt;0 tô đỏ để soi độ ổn định provider.</span><span class="fr">FR-09·10</span></li>
+      <li><span class="pin">4</span><span>Bấm dòng → mở rộng: từng tín hiệu + điểm cộng, chuỗi model đã thử, latency router; nội dung prompt ẩn theo mặc định bảo mật.</span><span class="fr">NFR-03·05</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= PLATE 05 — SETTINGS ================= -->
+  <section class="plate">
+    <div class="plate-head"><span class="plate-no">PLATE 05</span><h2>Settings — Gateway keys & trạng thái provider</h2></div>
+    <p class="plate-sub">Quản lý key mà client dùng để gọi gateway, và theo dõi "sức khỏe" từng provider (circuit breaker).</p>
+    <div class="wf">
+      <div class="wf-top"><span class="wf-dots"><span></span><span></span><span></span></span><span class="wf-url">smartroute.local/settings</span></div>
+      <div class="app">
+        <nav class="nav">
+          <div class="logo">◆ SMARTROUTE</div>
+          <a href="#">Dashboard</a><a href="#">Playground</a><a href="#">Logs</a><a href="#">Config</a><a href="#" class="on">Settings</a>
+        </nav>
+        <div class="main">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+            <span class="lbl" style="margin:0"><span class="pin">1</span> Gateway API keys</span>
+            <span class="btn pri">+ Tạo key</span>
+          </div>
+          <table class="wft">
+            <tr><th>Tên</th><th>Key</th><th><span class="pin">2</span> Rate limit</th><th>Tạo lúc</th><th>Trạng thái</th><th></th></tr>
+            <tr><td>app-web</td><td class="mono">sr-****9f2c</td><td>60 req/phút</td><td>01/08</td><td>● active</td><td><span class="btn">Thu hồi</span></td></tr>
+            <tr><td>eval-runner</td><td class="mono">sr-****11ab</td><td>120 req/phút</td><td>02/08</td><td>● active</td><td><span class="btn">Thu hồi</span></td></tr>
+          </table>
+          <div class="lbl" style="margin-top:16px"><span class="pin">3</span> Trạng thái provider</div>
+          <table class="wft">
+            <tr><th>Provider</th><th>Key nguồn</th><th>Circuit</th><th>Lỗi 24h</th></tr>
+            <tr><td>Google Gemini</td><td class="mono">env: GEMINI_API_KEY ✓</td><td style="color:var(--t1);font-weight:700">CLOSED (ok)</td><td>0</td></tr>
+            <tr><td>Groq</td><td class="mono">env: GROQ_API_KEY ✓</td><td style="color:var(--t1);font-weight:700">CLOSED (ok)</td><td>2</td></tr>
+            <tr><td>OpenAI</td><td class="mono">env: OPENAI_API_KEY ✓</td><td style="color:var(--t3);font-weight:700">OPEN (skip 4:12)</td><td>7</td></tr>
+          </table>
+          <div class="box dashed" style="margin-top:12px">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--muted)"><span class="pin">4</span> Provider key chỉ đọc từ biến môi trường — không nhập/hiển thị trong UI.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><span class="pin">1</span><span>Key hiển thị đầy đủ đúng một lần khi tạo; DB chỉ lưu hash.</span><span class="fr">FR-16 · NFR-03</span></li>
+      <li><span class="pin">2</span><span>Rate limit theo key, gateway trả 429 chuẩn OpenAI khi vượt.</span><span class="fr">FR-16</span></li>
+      <li><span class="pin">3</span><span>Trạng thái circuit breaker realtime từ <code>/healthz</code>; provider OPEN bị tạm loại khỏi routing.</span><span class="fr">FR-10</span></li>
+      <li><span class="pin">4</span><span>Nguyên tắc bảo mật: không bao giờ đưa provider key vào DB/log/UI.</span><span class="fr">NFR-03</span></li>
+    </ul>
+  </section>
+
+  <footer style="border-top:1.5px solid var(--ink);padding-top:14px;font-family:var(--mono);font-size:11px;color:var(--muted)">
+    SmartRoute Gateway · Gate 1 · 03_wireframe_ui_flow.html · Ưu tiên build: Plate 01 (G2) → 02, 04 (G3) → 03, 05 (G3)
+  </footer>
+</div>
+</body>
+</html>

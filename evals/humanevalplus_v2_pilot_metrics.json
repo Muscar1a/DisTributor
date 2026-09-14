@@ -1,0 +1,24 @@
+{
+  "benchmark": "HumanEval+",
+  "dataset_hash": "fe585eb4df8c88d844eeb463ea4d0302",
+  "classifier_pr": 167,
+  "classifier_commit": "51f5afa30067914c72d9a7d8614fad4b4f6c3d37",
+  "classifier_version": "llm-v2",
+  "n": 5,
+  "smart_valid": 5,
+  "strong_valid": 5,
+  "smart_pass_at_1": 1.0,
+  "strong_pass_at_1": 1.0,
+  "quality_retention": 1.0,
+  "smart_model_counts": {
+    "gpt-5.4-mini": 5
+  },
+  "classifier_level_counts": {
+    "L3": 5
+  },
+  "classifier_latency_ms": {
+    "min": 1322,
+    "max": 2270
+  },
+  "provider_errors": 0
+}

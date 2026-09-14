@@ -1,0 +1,7 @@
+FROM ganler/evalplus@sha256:26b118098bef281fe8dfe999bf05f1d5b45374b4e6c00161ec0f30592aef4740
+
+RUN python -m pip install --no-cache-dir --no-deps --force-reinstall "evalplus==0.3.1"
+RUN python -c "from pathlib import Path; Path('/root/.cache/evalplus/HumanEvalPlus-v0.1.10.jsonl').unlink(missing_ok=True); from evalplus.data import get_human_eval_plus, get_human_eval_plus_hash; get_human_eval_plus(); assert get_human_eval_plus_hash() == 'fe585eb4df8c88d844eeb463ea4d0302'"
+
+WORKDIR /work
+ENV PYTHONPATH=/work

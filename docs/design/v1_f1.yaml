@@ -1,0 +1,895 @@
+openapi: 3.1.0
+info:
+  title: SmartRoute Gateway — F1 API
+  version: 0.2.0
+  summary: Text-only OpenAI-compatible subset — F1 (định tuyến request có giải trình).
+  description: |
+    Contract **executable** cho Feature F1 — phạm vi mốc M1.
+
+    Nguyên tắc phạm vi: gateway là **text-only OpenAI-compatible subset**, không cam kết
+    toàn bộ bề mặt API OpenAI. Tham số ngoài whitelist bị từ chối sớm bằng `400`
+    (`unsupported_parameter`) thay vì im lặng bỏ qua.
+
+    Trạng thái: **pinned cho F1/M1** — ổn định có kiểm soát, chưa phải frozen: mọi thay đổi
+    phải qua PR label `interface-change` và pass breaking-change check (oasdiff) trong CI.
+    Contract chỉ chuyển **frozen** sau khi vertical slice M1 chạy được và FE/BE/AI đã cùng
+    review nó trên implement thật. Bề mặt của F2 (`/admin/config`), F3 (`/admin/stats`,
+    `/admin/requests`) và F4 (SSE, `/admin/keys`, `/v1/feedback`) được đặc tả khi từng
+    feature vào task, không định nghĩa trước ở đây.
+
+    Tài liệu liên quan: `docs/design/05_interfaces.md` (giải thích quyết định, ví dụ payload),
+    `docs/design/06_architecture.md` (boundary, failure ownership), `docs/design/02_prd.md` (yêu cầu sản phẩm).
+    Khi lệch nhau, **file này là source of truth cho HTTP schema**.
+  license:
+    name: MIT
+    identifier: MIT
+
+servers:
+  - url: /
+    description: Gateway root (dev — http://localhost:8000)
+
+security:
+  - gatewayKey: []
+
+tags:
+  - name: Chat
+    description: Endpoint chính — nhận request chuẩn OpenAI, gateway quyết định model.
+  - name: Models
+    description: Model khả dụng qua gateway kèm capability.
+  - name: Usage
+    description: Metadata routing/cost của một request đã gửi.
+  - name: Health
+    description: Liveness/readiness cho DevOps và Plate 05.
+
+paths:
+  /v1/chat/completions:
+    post:
+      tags: [Chat]
+      summary: Tạo chat completion — gateway tự chọn model theo độ khó
+      description: |
+        Trường `model` của client được coi là **gợi ý**; gateway quyết định model thật
+        trừ khi client override qua `smartroute.force_model` / `smartroute.force_tier`.
+
+        Thứ tự xử lý: validate whitelist & giới hạn input → classify độ khó → PolicyEngine
+        dựng chain (đã lọc capability và model đang bị circuit OPEN) → thử lần lượt trong chain
+        → tính cost → log.
+
+        **Fallback** chỉ xảy ra với lỗi retryable của provider (429, 5xx, timeout).
+        Lỗi content-filter **không** fallback và trả `400` ngay (ADR-010).
+      operationId: createChatCompletion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              simple:
+                summary: Prompt dễ, không khai policy
+                value:
+                  model: auto
+                  messages:
+                    - role: user
+                      content: Chào bạn
+              hardWithPolicy:
+                summary: Prompt khó + policy riêng cho request
+                value:
+                  model: auto
+                  messages:
+                    - role: system
+                      content: Bạn là trợ lý lập trình.
+                    - role: user
+                      content: Viết hàm Python kiểm tra số nguyên tố và giải thích độ phức tạp.
+                  temperature: 0.7
+                  max_tokens: 1024
+                  smartroute:
+                    policy: balanced
+              forceModel:
+                summary: Override model để so sánh chất lượng giữa tier
+                value:
+                  messages:
+                    - role: user
+                      content: Tóm tắt đoạn văn sau…
+                  smartroute:
+                    force_model: llama-70b-groq
+      responses:
+        '200':
+          description: Completion thành công (non-stream).
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+            X-SR-Request-Id:
+              $ref: '#/components/headers/XSRRequestId'
+            X-SR-Score:
+              $ref: '#/components/headers/XSRScore'
+            X-SR-Tier:
+              $ref: '#/components/headers/XSRTier'
+            X-SR-Model:
+              $ref: '#/components/headers/XSRModel'
+            X-SR-Provider:
+              $ref: '#/components/headers/XSRProvider'
+            X-SR-Cost-USD:
+              $ref: '#/components/headers/XSRCostUsd'
+            X-SR-Dropped-Params:
+              $ref: '#/components/headers/XSRDroppedParams'
+            X-SR-Clamped:
+              $ref: '#/components/headers/XSRClamped'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/QuotaExceeded'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '502':
+          $ref: '#/components/responses/ProviderError'
+
+  /v1/models:
+    get:
+      tags: [Models]
+      summary: Danh sách model khả dụng qua gateway
+      description: |
+        `capabilities` và `enabled` lấy từ cùng runtime provider snapshot với `/healthz` và
+        `/readyz`. `enabled=false` khi provider bị disabled/unavailable hoặc circuit model OPEN.
+      operationId: listModels
+      responses:
+        '200':
+          description: Danh sách model.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+
+  /v1/usage/{request_id}:
+    get:
+      tags: [Usage]
+      summary: Metadata routing/cost của một request đã gửi
+      description: |
+        Do log ghi 2 pha (ADR-008), endpoint này **không bao giờ trả 404 với `request_id`
+        vừa được cấp**: bản ghi tối thiểu được insert đồng bộ trước khi response của
+        `/v1/chat/completions` trả về.
+
+        `status=pending` nghĩa là background task chưa cập nhật xong (thường <1s) — lúc đó
+        `cost_usd` và các trường `latency_*` là `null`. Client poll tối đa 5 lần × 1 giây.
+
+        `404` chỉ xảy ra khi `request_id` không tồn tại hoặc không thuộc gateway key đang gọi.
+      operationId: getRequestUsage
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+      responses:
+        '200':
+          description: Trạng thái hiện tại của bản ghi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /healthz:
+    get:
+      tags: [Health]
+      summary: Liveness + trạng thái circuit của từng provider
+      description: |
+        Luôn `200` nếu process còn sống — dùng cho liveness probe và cho Plate 05 (Settings).
+
+        `status=degraded` khi tỉ lệ `classifier_error` vượt 5% trong 5 phút (ADR-009) hoặc
+        có provider không available; process vẫn phục vụ request bình thường.
+      operationId: getLiveness
+      security: []
+      responses:
+        '200':
+          description: Process còn sống.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+
+  /readyz:
+    get:
+      tags: [Health]
+      summary: Readiness — DB, config và ít nhất một provider đã sẵn sàng
+      description: |
+        `503` khi DB không reachable, config chưa load được, hoặc không còn model/provider nào
+        khả dụng. Một phần provider lỗi vẫn trả `200` với `checks.providers=degraded` để fallback hoạt động.
+      operationId: getReadiness
+      security: []
+      responses:
+        '200':
+          description: Sẵn sàng nhận traffic.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Readiness'
+        '503':
+          description: Một dependency bắt buộc chưa sẵn sàng.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Readiness'
+
+components:
+  securitySchemes:
+    gatewayKey:
+      type: http
+      scheme: bearer
+      description: |
+        Gateway key của client: `Authorization: Bearer sr-...`.
+
+        **M1:** một key tĩnh nạp từ env `GATEWAY_DEV_KEY`. **M3 (FR-16):** key được cấp/thu hồi
+        qua `/admin/keys`, DB lưu hash SHA-256. Cơ chế cấp key đổi nhưng **header không đổi**,
+        nên contract này giữ nguyên qua cả hai mốc.
+
+        Provider API key (Gemini/Groq/…) không bao giờ đi qua header này — chúng chỉ tồn tại
+        trong env của container gateway.
+
+  parameters:
+    RequestId:
+      name: request_id
+      in: path
+      required: true
+      description: UUID v4 do gateway cấp, trả trong `smartroute.request_id`, header chuẩn `X-Request-Id`, và alias `X-SR-Request-Id`.
+      schema:
+        type: string
+        format: uuid
+
+  headers:
+    XRequestId:
+      description: Standard OpenAI request ID consumed by official SDK raw responses and exceptions.
+      required: true
+      schema:
+        type: string
+        format: uuid
+    XSRRequestId:
+      description: UUID của request — dùng để tra log và gọi `/v1/usage/{request_id}`.
+      required: true
+      schema:
+        type: string
+        format: uuid
+    XSRScore:
+      description: Điểm độ khó 0–100 do classifier chấm.
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+    XSRTier:
+      description: Tier sau khi áp policy/override.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Tier'
+    XSRModel:
+      description: Model thực tế đã trả lời.
+      required: true
+      schema:
+        type: string
+    XSRProvider:
+      description: Provider thực tế đã trả lời.
+      required: true
+      schema:
+        type: string
+    XSRCostUsd:
+      description: Chi phí request (USD). Chỉ có ở non-stream; stream lấy qua `/v1/usage/{request_id}`.
+      schema:
+        type: string
+    XSRDroppedParams:
+      description: |
+        Danh sách tham số bị adapter drop vì provider đích không hỗ trợ, phân tách bằng dấu phẩy
+        (ví dụ `top_p,stop`). Chỉ xuất hiện khi có tham số bị drop; request **không** fail.
+      schema:
+        type: string
+        examples: ['top_p,stop']
+    XSRClamped:
+      description: |
+        Chỉ xuất hiện khi `max_tokens` được gateway hạ chính xác về giới hạn output 8192.
+        Giá trị header luôn là `max_tokens`; request từ 8192 trở xuống không có header này.
+      schema:
+        type: string
+        enum: [max_tokens]
+
+  schemas:
+    Role:
+      type: string
+      enum: [system, user, assistant]
+
+    Tier:
+      type: string
+      description: T1 = Easy · T2 = Medium · T3 = Hard.
+      enum: [T1, T2, T3]
+
+    Policy:
+      type: string
+      enum: [cost_first, balanced, quality_first]
+
+    Message:
+      type: object
+      additionalProperties: false
+      required: [role, content]
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+        content:
+          type: string
+          minLength: 1
+          description: |
+            **Chỉ chấp nhận string.** `content` dạng mảng (image/audio/file parts) bị từ chối
+            bằng `400 unsupported_parameter` — ngoài phạm vi MVP.
+
+    SmartRouteOptions:
+      type: object
+      additionalProperties: false
+      description: Extension riêng của gateway. Bỏ trống thì dùng `default_policy` trong config.
+      properties:
+        policy:
+          oneOf:
+            - $ref: '#/components/schemas/Policy'
+            - type: 'null'
+        force_model:
+          type: [string, 'null']
+          description: |
+            Bỏ qua classifier, dùng đúng model này. Phải tồn tại và `enabled=true` trong
+            `GET /v1/models`, nếu không → `400 unknown_model`.
+        force_tier:
+          oneOf:
+            - $ref: '#/components/schemas/Tier'
+            - type: 'null'
+          description: Bỏ qua classifier nhưng vẫn đi qua PolicyEngine để dựng chain.
+
+    ChatCompletionRequest:
+      type: object
+      additionalProperties: false
+      required: [messages]
+      description: |
+        Whitelist tham số MVP. Bất kỳ trường nào **ngoài** danh sách dưới đây → `400`
+        `unsupported_parameter`, message nêu đúng tên trường (`additionalProperties: false`).
+        Public boundaries mặc định: body HTTP 1.000.000 bytes; 50 messages; tổng input ước lượng
+        8.000 token; output 8.192 token. Byte, message và input vượt giới hạn bị từ chối trước
+        provider; output vượt giới hạn được clamp như mô tả ở `max_tokens`.
+      properties:
+        model:
+          type: string
+          default: auto
+          description: Gợi ý từ client; gateway quyết định model thật trừ khi có override.
+        messages:
+          type: array
+          minItems: 1
+          maxItems: 50
+          description: Vượt `MAX_MESSAGES` (mặc định 50) → `400 too_many_messages`.
+          items:
+            $ref: '#/components/schemas/Message'
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+          description: Pass-through xuống provider.
+        max_tokens:
+          type: integer
+          minimum: 1
+          x-sr-clamp-maximum: 8192
+          description: |
+            Giá trị > 8192 **không bị từ chối** mà bị clamp về 8192 kèm header
+            `X-SR-Clamped: max_tokens`.
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: |
+            Trong whitelist. Provider đích không hỗ trợ → adapter **drop** + báo qua
+            `X-SR-Dropped-Params`, request vẫn thành công.
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              minItems: 1
+              maxItems: 4
+              items:
+                type: string
+          description: Như `top_p` — trong whitelist, có thể bị drop theo provider.
+        stream:
+          type: boolean
+          default: false
+          description: |
+            **M1–M2: chỉ `false`.** `stream=true` trả `400 unsupported_parameter` cho tới khi
+            FR-15 hoàn thành ở M3. Bề mặt SSE sẽ được đặc tả trong interface của F4.
+        smartroute:
+          $ref: '#/components/schemas/SmartRouteOptions'
+
+    Usage:
+      type: object
+      required: [prompt_tokens, completion_tokens, total_tokens]
+      properties:
+        prompt_tokens:
+          type: integer
+          minimum: 0
+        completion_tokens:
+          type: integer
+          minimum: 0
+        total_tokens:
+          type: integer
+          minimum: 0
+
+    Signal:
+      type: object
+      required: [name, points]
+      description: Tín hiệu đã kích hoạt khi chấm điểm — cơ sở để giải thích quyết định (NFR-05).
+      properties:
+        name:
+          type: string
+          description: |
+            Ví dụ `code`, `multi_step`, `length`, `math`, `fast_path_easy`.
+            `classifier_error` nghĩa là classifier lỗi nội bộ và tier đã fallback về T2 (ADR-009).
+        points:
+          type: integer
+
+    ChainAttempt:
+      type: object
+      required: [model, provider, status]
+      properties:
+        model:
+          type: string
+        provider:
+          type: string
+        status:
+          type: string
+          enum: [ok, error, skipped]
+        error:
+          type: [string, 'null']
+          description: Mã lỗi đã chuẩn hóa theo taxonomy adapter, ví dụ `rate_limit`, `timeout`.
+
+    SmartRouteMeta:
+      type: object
+      required:
+        - request_id
+        - difficulty_score
+        - tier
+        - signals
+        - policy
+        - model_used
+        - provider
+        - classifier_version
+        - fallback_count
+      description: |
+        Metadata routing gắn kèm mọi response. Trong `GET /v1/usage/{request_id}` với
+        `status=pending`, các trường `cost_usd` và `latency_*` là `null`.
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        difficulty_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        tier:
+          $ref: '#/components/schemas/Tier'
+        signals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Signal'
+        policy:
+          $ref: '#/components/schemas/Policy'
+        model_used:
+          type: string
+        provider:
+          type: string
+        classifier_version:
+          type: string
+          description: Ví dụ `heuristic-v1`, `llm-v2`, `embed-v2`.
+        cost_usd:
+          type: [number, 'null']
+          description: Tính từ `pricing.yaml`. `null` khi bản ghi còn `pending`.
+        latency_total_ms:
+          type: [integer, 'null']
+        latency_router_ms:
+          type: [integer, 'null']
+          description: Riêng khâu classify + chọn chain (NFR-01, mục tiêu p95 < 300ms).
+        fallback_count:
+          type: integer
+          minimum: 0
+        usage_estimated:
+          type: boolean
+          default: false
+          description: |
+            `true` khi provider trả usage thiếu/sai và adapter phải tự ước lượng token
+            (AC-4.2) — cost khi đó là số ước lượng.
+        chain_attempted:
+          type: array
+          description: Các model đã thử theo thứ tự. Luôn có mặt khi `fallback_count > 0`.
+          items:
+            $ref: '#/components/schemas/ChainAttempt'
+
+    Choice:
+      type: object
+      required: [index, message, finish_reason]
+      properties:
+        index:
+          type: integer
+          minimum: 0
+        message:
+          type: object
+          required: [role, content]
+          properties:
+            role:
+              const: assistant
+            content:
+              type: string
+        finish_reason:
+          type: string
+          enum: [stop, length, content_filter]
+
+    ChatCompletionResponse:
+      type: object
+      required: [id, object, created, model, choices, usage, smartroute]
+      description: Chuẩn OpenAI + trường bổ sung `smartroute` (additive, không phá SDK).
+      properties:
+        id:
+          type: string
+          examples: ['chatcmpl-8f3a2b']
+        object:
+          const: chat.completion
+        created:
+          type: integer
+          description: Unix timestamp (giây).
+        model:
+          type: string
+          description: Model **thực tế** đã trả lời, không phải giá trị client gửi lên.
+        choices:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Choice'
+        usage:
+          $ref: '#/components/schemas/Usage'
+        smartroute:
+          $ref: '#/components/schemas/SmartRouteMeta'
+
+    UsageResponse:
+      type: object
+      required: [status, smartroute]
+      properties:
+        status:
+          type: string
+          enum: [pending, complete]
+        smartroute:
+          $ref: '#/components/schemas/SmartRouteMeta'
+
+    Model:
+      type: object
+      required: [id, object, provider, default_tier, capabilities, enabled]
+      properties:
+        id:
+          type: string
+          examples: ['gemini-flash-lite']
+        object:
+          const: model
+        provider:
+          type: string
+          examples: ['google']
+        default_tier:
+          $ref: '#/components/schemas/Tier'
+        capabilities:
+          type: array
+          description: Nguồn để PolicyEngine lọc chain và để FE ẩn model không phù hợp.
+          items:
+            type: string
+            enum: [text, stream]
+        enabled:
+          type: boolean
+          description: '`false` khi provider thiếu API key hoặc circuit đang OPEN.'
+
+    ModelList:
+      type: object
+      required: [object, data]
+      properties:
+        object:
+          const: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+
+    CircuitState:
+      type: string
+      enum: [closed, open, half_open]
+
+    ProviderHealth:
+      type: object
+      required: [provider, status, configured, available, circuit, consecutive_errors]
+      properties:
+        provider:
+          type: string
+        status:
+          type: string
+          enum: [available, disabled, unavailable, unhealthy]
+        configured:
+          type: boolean
+        available:
+          type: boolean
+        circuit:
+          $ref: '#/components/schemas/CircuitState'
+        consecutive_errors:
+          type: integer
+          minimum: 0
+        open_until:
+          type: [string, 'null']
+          format: date-time
+
+    Health:
+      type: object
+      required: [status, version, db, classifier_error_rate, providers]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        version:
+          type: string
+          examples: ['0.1.0']
+        db:
+          type: string
+          enum: [ok, unavailable]
+        classifier_error_rate:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: |
+            Tỉ lệ `classifier_error` trong 5 phút gần nhất. Vượt 0.05 → `status=degraded`
+            (ADR-009). Đây là guard cho quyết định "classifier lỗi → mặc định T2".
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderHealth'
+
+    Readiness:
+      type: object
+      required: [status, checks]
+      properties:
+        status:
+          type: string
+          enum: [ready, not_ready]
+        checks:
+          type: object
+          required: [database, config, providers]
+          properties:
+            database:
+              type: string
+              enum: [ok, unavailable]
+            config:
+              type: string
+              enum: [ok, invalid]
+            providers:
+              type: string
+              enum: [ok, degraded, unavailable]
+
+    ErrorBody:
+      type: object
+      required: [message, type, param, code, request_id, details]
+      description: |
+        Giữ 3 trường của OpenAI (`message`, `type`, `code`) để SDK chuẩn parse được, cộng
+        `request_id` và `details` cho việc tra log. FE rẽ nhánh theo `code`, **không** parse
+        nội dung `message`.
+      properties:
+        message:
+          type: string
+          description: Mô tả đọc được cho người dùng; với lỗi tham số phải nêu đúng tên trường.
+        type:
+          type: string
+          enum:
+            - invalid_request_error
+            - authentication_error
+            - not_found_error
+            - rate_limit_error
+            - quota_exceeded
+            - provider_error
+            - internal_error
+        param:
+          type: [string, 'null']
+          description: Stable request parameter for 400 errors; null when no request field caused the error.
+        code:
+          type: [string, 'null']
+          description: |
+            Mã máy đọc. Các mã chuẩn hóa của F1: `unsupported_parameter`,
+            `unsupported_capability`, `unknown_model`, `context_too_long`,
+            `too_many_messages`, `missing_messages`, `payload_too_large`,
+            `invalid_api_key`, `provider_error`, `content_filtered`, `internal_error`.
+        request_id:
+          type: string
+          format: uuid
+        details:
+          type: object
+          additionalProperties: true
+          description: |
+            Ngữ cảnh bổ sung, có thể là object rỗng. Ví dụ `{"parameter": "tools"}`,
+            `{"limit": 8000, "actual": 17240}`.
+        reset_at:
+          type: string
+          format: date-time
+          description: Next UTC reset time; present for resettable quota errors.
+        retry_after_seconds:
+          type: integer
+          minimum: 1
+          description: Seconds until reset; matches the Retry-After header.
+
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+
+    ProviderErrorEnvelope:
+      type: object
+      required: [error, smartroute]
+      description: Lỗi `502` kèm bằng chứng đã thử hết chain — phục vụ audit và AC-3.3.
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+        smartroute:
+          type: object
+          required: [request_id, tier, chain_attempted]
+          properties:
+            request_id:
+              type: string
+              format: uuid
+            tier:
+              $ref: '#/components/schemas/Tier'
+            chain_attempted:
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/ChainAttempt'
+
+  responses:
+    BadRequest:
+      description: |
+        Request hợp lệ về cú pháp nhưng bị từ chối theo chính sách phạm vi. `code` phân biệt
+        nguyên nhân:
+
+        | `code` | Khi nào |
+        |---|---|
+        | `unsupported_parameter` | Trường ngoài whitelist MVP (`tools`, `response_format`, `n`, `logprobs`, `seed`, `content` dạng mảng) hoặc `stream=true` trước M3 |
+        | `unsupported_capability` | Toàn hệ thống không còn model nào đủ capability request yêu cầu |
+        | `unknown_model` | `force_model` không tồn tại hoặc đang `enabled=false` |
+        | `too_many_messages` | Vượt `MAX_MESSAGES` |
+        | `context_too_long` | Vượt `MAX_INPUT_TOKENS` |
+        | `content_filtered` | Provider chặn nội dung — **không** fallback (ADR-010) |
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            unsupportedParameter:
+              summary: Client gửi tool calling
+              value:
+                error:
+                  message: "Tham số 'tools' không được hỗ trợ trong phạm vi text-only của gateway."
+                  type: invalid_request_error
+                  code: unsupported_parameter
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  details:
+                    parameter: tools
+            contextTooLong:
+              summary: Vượt giới hạn input token
+              value:
+                error:
+                  message: 'Tổng input token vượt giới hạn 8000.'
+                  type: invalid_request_error
+                  code: context_too_long
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  details:
+                    limit: 8000
+                    actual: 17240
+
+    Unauthenticated:
+      description: Thiếu hoặc sai gateway key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    NotFound:
+      description: Resource không tồn tại hoặc không thuộc gateway key đang gọi — không tiết lộ metadata.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    PayloadTooLarge:
+      description: Body vượt 1 MB.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    ValidationError:
+      description: Body sai schema — `details` chỉ rõ đường dẫn trường lỗi.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            missingMessages:
+              value:
+                error:
+                  message: 'Thiếu trường bắt buộc: messages.'
+                  type: invalid_request_error
+                  code: missing_messages
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  details:
+                    loc: [body, messages]
+
+    QuotaExceeded:
+      description: Daily per-key token budget has been exhausted until the next UTC day.
+      headers:
+        Retry-After:
+          description: Seconds until the daily quota resets.
+          schema:
+            type: integer
+            minimum: 1
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            dailyTokenBudgetExceeded:
+              value:
+                error:
+                  message: 'Quota limit exceeded (50,000 tokens). Please try again later.'
+                  type: quota_exceeded
+                  code: daily_token_budget_exceeded
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  reset_at: '2026-08-30T00:00:00Z'
+                  retry_after_seconds: 3600
+                  details:
+                    limit: 50000
+                    used: 50997
+
+    ProviderError:
+      description: |
+        Mọi model trong chain đều fail với lỗi retryable. Bản ghi log được ghi với
+        `status=error` và `chain_attempted` đầy đủ (AC-3.3).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProviderErrorEnvelope'
+          examples:
+            chainExhausted:
+              value:
+                error:
+                  message: 'Tất cả provider trong chain đều không phản hồi.'
+                  type: provider_error
+                  code: provider_error
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  details: {}
+                smartroute:
+                  request_id: 0b1c2d3e-4f56-4789-a012-3456789abcde
+                  tier: T3
+                  chain_attempted:
+                    - model: gemini-pro
+                      provider: google
+                      status: error
+                      error: rate_limit
+                    - model: llama-70b-groq
+                      provider: groq
+                      status: error
+                      error: timeout
+
+    InternalError:
+      description: |
+        Lỗi nội bộ của gateway, gồm cả trường hợp adapter map sai request xuống provider
+        (`BadRequestToProvider`). Không bao giờ dùng để che lỗi provider.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'

@@ -1,0 +1,109 @@
+name: Dashboard Vercel
+
+on:
+  pull_request:
+    branches: [dev, main]
+    paths: ["src/dashboard/**", ".github/workflows/dashboard-vercel.yml"]
+  push:
+    branches: [dev, main]
+    paths: ["src/dashboard/**", ".github/workflows/dashboard-vercel.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dashboard-vercel-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_CONFIG_CACHE: /tmp/npm-${{ github.run_id }}-${{ github.run_attempt }}
+
+jobs:
+  preview:
+    if: github.event_name == 'pull_request'
+    runs-on: [self-hosted, cohort3]
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VITE_GIT_COMMIT_SHA: ${{ github.sha }}
+    defaults:
+      run:
+        working-directory: src/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/dashboard/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx vercel@latest pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - run: npx vercel@latest build --target=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy preview
+        run: npx vercel@latest deploy --prebuilt --target=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+  staging:
+    if: github.event_name == 'push' && github.ref_name == 'dev'
+    environment: staging
+    runs-on: [self-hosted, cohort3]
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_STAGING_DOMAIN: ${{ vars.VERCEL_STAGING_DOMAIN }}
+      VITE_GIT_COMMIT_SHA: ${{ github.sha }}
+    defaults:
+      run:
+        working-directory: src/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/dashboard/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Validate staging configuration
+        run: |
+          if [ -z "$VERCEL_STAGING_DOMAIN" ]; then
+            echo "::error::Set the VERCEL_STAGING_DOMAIN repository variable to the staging hostname."
+            exit 1
+          fi
+      - run: npx vercel@latest pull --yes --environment=preview --git-branch=dev --token=${{ secrets.VERCEL_TOKEN }}
+      - run: npx vercel@latest build --target=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy staging artifact
+        id: deploy
+        run: |
+          deployment_url="$(npx vercel@latest deploy --prebuilt --target=preview --token=${{ secrets.VERCEL_TOKEN }})"
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+      - name: Update stable staging alias
+        run: npx vercel@latest alias set "${{ steps.deploy.outputs.url }}" "$VERCEL_STAGING_DOMAIN" --token=${{ secrets.VERCEL_TOKEN }}
+
+  production:
+    if: github.event_name == 'push' && github.ref_name == 'main'
+    environment: production
+    runs-on: [self-hosted, cohort3]
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
+      VERCEL_PRODUCTION_ORIGIN: ${{ vars.VERCEL_PRODUCTION_ORIGIN }}
+      VITE_GIT_COMMIT_SHA: ${{ github.sha }}
+    defaults:
+      run:
+        working-directory: src/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/dashboard/package-lock.json
+      - run: npm ci
+      - run: npx vercel@latest pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Validate production API origin
+        run: npm run validate:api-url
+      - run: npx vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy production
+        run: npx vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

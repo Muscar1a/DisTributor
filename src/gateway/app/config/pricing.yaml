@@ -1,0 +1,37 @@
+# Bảng giá LLM provider — nguồn duy nhất để tính cost và baseline premium
+# (docs/design/05_interfaces.md §D).
+# Khảo sát tháng 08/2026 từ trang giá chính thức:
+#   Google Gemini: https://ai.google.dev/gemini-api/docs/pricing (updated 2026-08-05)
+#   Groq:          https://groq.com/pricing
+# Quy ước: input_per_1m_usd / output_per_1m_usd = USD trên 1.000.000 token.
+
+premium_baseline_model: gpt-5.4
+
+models:
+  # gemini-flash-lite -> gemini-3.1-flash-lite (đã verify hoạt động 08/2026)
+  gemini-flash-lite: { provider: google, input_per_1m_usd: 0.25, output_per_1m_usd: 1.50, quality_rank: 3, context_window: 1000000 }
+  # gemini-flash -> gemini-3.5-flash (đã verify hoạt động 08/2026)
+  gemini-flash: { provider: google, input_per_1m_usd: 1.50, output_per_1m_usd: 9.00, quality_rank: 6, context_window: 1000000 }
+  # gemini-pro -> gemini-2.5-pro (tồn tại, free tier rate limit)
+  gemini-pro: { provider: google, input_per_1m_usd: 1.25, output_per_1m_usd: 10.00, quality_rank: 9, context_window: 1000000 }
+  llama-3.3-70b: { provider: groq, input_per_1m_usd: 0.59, output_per_1m_usd: 0.79, quality_rank: 5, context_window: 128000 }
+  groq-compound: { provider: groq, input_per_1m_usd: 0.59, output_per_1m_usd: 0.79, quality_rank: 7, context_window: 128000 }
+  # OpenAI — snapshot 08/2026 từ platform.openai.com/docs/pricing
+  # T1: nano/mini rẻ nhất
+  gpt-5-nano:   { provider: openai, input_per_1m_usd: 0.05, output_per_1m_usd: 0.40, quality_rank: 1, context_window: 128000 }
+  gpt-4.1-nano: { provider: openai, input_per_1m_usd: 0.10, output_per_1m_usd: 0.40, quality_rank: 2, context_window: 1000000 }
+  gpt-4o-mini:  { provider: openai, input_per_1m_usd: 0.15, output_per_1m_usd: 0.60, quality_rank: 2, context_window: 128000 }
+  gpt-5.4-nano: { provider: openai, input_per_1m_usd: 0.20, output_per_1m_usd: 1.25, quality_rank: 3, context_window: 128000 }
+  # T2: mini tier
+  gpt-5-mini:   { provider: openai, input_per_1m_usd: 0.25, output_per_1m_usd: 2.00, quality_rank: 4, context_window: 128000 }
+  gpt-4.1-mini: { provider: openai, input_per_1m_usd: 0.40, output_per_1m_usd: 1.60, quality_rank: 4, context_window: 1000000 }
+  gpt-5.4-mini: { provider: openai, input_per_1m_usd: 0.75, output_per_1m_usd: 4.50, quality_rank: 5, context_window: 128000 }
+  o3-mini:      { provider: openai, input_per_1m_usd: 1.10, output_per_1m_usd: 4.40, quality_rank: 6, context_window: 200000 }
+  o4-mini:      { provider: openai, input_per_1m_usd: 1.10, output_per_1m_usd: 4.40, quality_rank: 6, context_window: 200000 }
+  # T3: full models
+  gpt-5.1:      { provider: openai, input_per_1m_usd: 1.25, output_per_1m_usd: 10.00, quality_rank: 7, context_window: 1000000 }
+  gpt-5:        { provider: openai, input_per_1m_usd: 1.25, output_per_1m_usd: 10.00, quality_rank: 7, context_window: 128000 }
+  gpt-5.2:      { provider: openai, input_per_1m_usd: 1.75, output_per_1m_usd: 14.00, quality_rank: 7, context_window: 128000 }
+  gpt-4.1:      { provider: openai, input_per_1m_usd: 2.00, output_per_1m_usd: 8.00,  quality_rank: 8, context_window: 1000000 }
+  gpt-4o:       { provider: openai, input_per_1m_usd: 2.50, output_per_1m_usd: 10.00, quality_rank: 8, context_window: 128000 }
+  gpt-5.4:      { provider: openai, input_per_1m_usd: 2.50, output_per_1m_usd: 15.00, quality_rank: 9, context_window: 128000 }
